@@ -9,8 +9,7 @@ The motivation to write this is to note:
 How to build secure channels between devices?
 
 We encounter this problem when doing work for Firefox OS:
-
-    How to build a secure channel between Firefox Android and Firefox OS TV?
+> How to build a secure channel between Firefox Android and Firefox OS TV?
 
 To make Firefox Android as a remote controller of Firefox OS TV,
 building a secure channel is definitely the first step to do.
