@@ -1,0 +1,412 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>J-PAKE protocol - J-PAKE over TLS</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../../favicon.svg">
+        <link rel="shortcut icon" href="../../../favicon.png">
+        <link rel="stylesheet" href="../../../css/variables.css">
+        <link rel="stylesheet" href="../../../css/general.css">
+        <link rel="stylesheet" href="../../../css/chrome.css">
+        <link rel="stylesheet" href="../../../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../../highlight.css">
+        <link rel="stylesheet" href="../../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../../overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../../../tls/tls.html"><strong aria-hidden="true">2.</strong> Introduction of TLS</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../tls/handshake.html"><strong aria-hidden="true">2.1.</strong> Handshake</a></li><li class="chapter-item expanded "><a href="../../../tls/cert_auth.html"><strong aria-hidden="true">2.2.</strong> Certificate Authentication</a></li></ol></li><li class="chapter-item expanded "><a href="../../../pake/pake.html"><strong aria-hidden="true">3.</strong> PAKE: Password authenticated Key Exchange</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../pake/security_requirements.html"><strong aria-hidden="true">3.1.</strong> Security Requirements</a></li><li class="chapter-item expanded "><a href="../../../pake/two_stages.html"><strong aria-hidden="true">3.2.</strong> General Two-Stage Framework</a></li><li class="chapter-item expanded "><a href="../../../pake/balanced/balanced_pake.html"><strong aria-hidden="true">3.3.</strong> Balanced PAKE</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../pake/balanced/dh-eke.html"><strong aria-hidden="true">3.3.1.</strong> DH-EKE: Diffie-Hellman Encrypted key exchange</a></li><li class="chapter-item expanded "><a href="../../../pake/balanced/speke.html"><strong aria-hidden="true">3.3.2.</strong> SPEKE: Simple Password Exponential Key Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="../../../pake/augmented/augmented_pake.html"><strong aria-hidden="true">3.4.</strong> Augmented PAKE</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../pake/augmented/srp.html"><strong aria-hidden="true">3.4.1.</strong> SRP: Secure Remote Password protocol</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../../../pake/balanced/jpake/intro.html"><strong aria-hidden="true">4.</strong> J-PAKE: Password Authenticated Key Exchange by Juggling</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../pake/balanced/jpake/jpake.html" class="active"><strong aria-hidden="true">4.1.</strong> J-PAKE protocol</a></li><li class="chapter-item expanded "><a href="../../../pake/balanced/jpake/security.html"><strong aria-hidden="true">4.2.</strong> Security</a></li><li class="chapter-item expanded "><a href="../../../pake/balanced/jpake/comparison.html"><strong aria-hidden="true">4.3.</strong> Comparison</a></li></ol></li><li class="chapter-item expanded "><a href="../../../pake/balanced/jpake/jpake_over_tls.html"><strong aria-hidden="true">5.</strong> J-PAKE over TLS</a></li><li class="chapter-item expanded "><a href="../../../discussion.html"><strong aria-hidden="true">6.</strong> Discussion</a></li><li class="chapter-item expanded "><a href="../../../appendix/index.html"><strong aria-hidden="true">7.</strong> Appendix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../appendix/hash.html"><strong aria-hidden="true">7.1.</strong> Hash function</a></li><li class="chapter-item expanded "><a href="../../../appendix/modular_arithmetic.html"><strong aria-hidden="true">7.2.</strong> Modular Arithmetic</a></li><li class="chapter-item expanded "><a href="../../../appendix/gcd.html"><strong aria-hidden="true">7.3.</strong> GCD: Greatest Common Divisors</a></li><li class="chapter-item expanded "><a href="../../../appendix/group_theory.html"><strong aria-hidden="true">7.4.</strong> Group Theory</a></li><li class="chapter-item expanded "><a href="../../../appendix/trapdoor_function.html"><strong aria-hidden="true">7.5.</strong> Trapdoor Function</a></li><li class="chapter-item expanded "><a href="../../../appendix/dh/dh.html"><strong aria-hidden="true">7.6.</strong> Diffie-Hellman Key Exchange</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../appendix/dh/dh_multiple_parties.html"><strong aria-hidden="true">7.6.1.</strong> Diffie-Hellman with Multiple Parties</a></li><li class="chapter-item expanded "><a href="../../../appendix/dh/assumptions.html"><strong aria-hidden="true">7.6.2.</strong> Diffie-Hellman Assumptions</a></li></ol></li><li class="chapter-item expanded "><a href="../../../appendix/zkp/zkp.html"><strong aria-hidden="true">7.7.</strong> Zero-Knowledge Proof</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../../appendix/zkp/schnorr_signature.html"><strong aria-hidden="true">7.7.1.</strong> Schnorr Signature</a></li></ol></li><li class="chapter-item expanded "><a href="../../../appendix/ecc.html"><strong aria-hidden="true">7.8.</strong> Elliptic Curve Cryptography</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">J-PAKE over TLS</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="j-pake-protocol"><a class="header" href="#j-pake-protocol">J-PAKE Protocol</a></h1>
+<p>As a <a href="../../pake.html" title="Password Authenticated Key Exchange"><em>PAKE</em></a> family member,
+<em>J-PAKE</em> follows the <a href="../../two_stages.html" title="General Two-Stage Framework">general two-stage framework</a>:</p>
+<ol>
+<li><strong>Key Establishment Protocol</strong>:
+Negotiate a one-time session key for the engaging parties.</li>
+<li><strong>Key Confirmation Protocol</strong>:
+Authenticate each other has the same session key.</li>
+</ol>
+<p>The key confirmation part is easy to understand.
+It's nothing different from the introduction of <a href="../../two_stages.html" title="General Two-Stage Framework">two-stage framework</a>.
+In this chapter, we will focus on the first stage to realize
+the magic behind <em>J-PAKE</em>.</p>
+<p>Before introducing, let we define the symbols first:
+Let group \( G \) is a subgroup of \( Z^{\times}_p \) with prime order \( q \),
+in which the discrete log problem is intractable
+(Nevertheless, \( G \) also can be switched to Elliptic curve cryptography group).
+Let \( g \) is the generator of \( G \).
+Typically, <a href="https://en.wikipedia.org/wiki/Schnorr_group" title="Schnorr group">Schnorr group</a> is used in this protocol.</p>
+<p>The two communication parties, Alice and Bob,
+both agree on group \( (G, g) \).
+Let \( s \) is their low-entropy shared secret,
+which can be a password or hash of a password,
+and \( s \neq 0 \) is not empty.
+The value of \( s \) is assumed in \( [1, q-1] \).</p>
+<h2 id="key-establishment"><a class="header" href="#key-establishment">Key Establishment</a></h2>
+<p>The key establishment of <em>J-PAKE</em> executes in two rounds.</p>
+<h3 id="round-1"><a class="header" href="#round-1">Round 1</a></h3>
+<p><img src="jpake-round1.png" alt="jpake-round1" /></p>
+<p>In round 1, Alice selects \( x_1 \in [0, q-1], x_2 \in [1, q-1] \)
+then sends out \( g^{x_1}, g^{x_2} \) with Zero-knowledge proof for \( x_1, x_2 \).
+Similarly, Bob selects \( x_3 \in [0, q-1], x_4 \in [1, q-1] \) and
+sends out \( g^{x_3}, g^{x_4} \) with Zero-knowledge proof for \( x_3, x_4 \).
+The above communication can be completed in one round
+as neither party depends on the other.
+When it finishes, Alice and Bob verify the received Zero-knowledge proof
+and also check \( g^{x_2}, g^{x_4} \neq 1 \).</p>
+<h3 id="round-2"><a class="header" href="#round-2">Round 2</a></h3>
+<p><img src="jpake-round2.png" alt="jpake-round2" /></p>
+<p>Alice sends out \( A = g^{(x_1 + x_3 + x_4) \cdot x_2 \cdot s} = (g^{x_1} \cdot g^{x_3} \cdot g^{x_4})^{x_2 \cdot s} \)
+and a Zero-knowledge proof for \( x_2 \cdot s \).
+Similarly, Bob sends out \( B = g^{(x_1 + x_2 + x_3) \cdot x_4 \cdot s} = (g^{x_1} \cdot g^{x_2} \cdot g^{x_3})^{x_4 \cdot s} \)
+and a Zero-knowledge proof for \( x_4 \cdot s \).</p>
+<p>After round 2, Alice computes \( K = (B / g^{x_2 \cdot x_4 \cdot s})^{x_2} = g^{(x_1 + x_3) \cdot x_2 \cdot x_4 \cdot s} \),
+and Bob computes \( K = (A / g^{x_2 \cdot x_4 \cdot s})^{x_4} = g^{(x_1 + x_3) \cdot x_2 \cdot x_4 \cdot s} \).</p>
+<p>With the same keying material \( K \),
+a session key can be derived for Alice and Bob: \( k = H(K) \),
+where \( H \) is a <a href="https://en.wikipedia.org/wiki/Cryptographic_hash_function" title="Cryptographic hash function">Cryptographic hash function</a>.</p>
+<p>The division \( / \) here means multiplication with the <strong>inverse element</strong>.
+For example, \( a / b = a \cdot b^{-1} = b^{q - 1} \), where \( a, b \in G \).
+\( b^{-1} \) is an element such that \( b \cdot b^{-1} = 1 \),
+known as the inverse element of \( b \).
+From the fact that \( b^q = 1 \), where \( q \) is the order of \( G \),
+\( b^{q-i} \) can be used as an inverse element of \( b^i \)
+because \( b^i \cdot b^{q-i} = b^q = 1 \), where \( i \in N \).</p>
+<p>Therefore, the \( K \) can be computed by</p>
+<p>$$
+\begin{aligned}
+K &amp;= (\frac{B}{g^{x_2 \cdot x_4 \cdot s}})^{x_2} \\
+&amp;= (B \cdot g^{-(x_2 \cdot x_4 \cdot s}))^{x_2} \\
+&amp;= (B \cdot (g^{x_2 \cdot x_4})^{-s})^{x_2} \\
+&amp;= (B \cdot (g^{x_2 \cdot x_4})^{q-s})^{x_2} \\
+\\
+L &amp;= g^{x_2 \cdot x_4} = (g^{x_4})^{x_2} \\
+I &amp;= L^{-s} = L^{q-s} \\
+J_{Alice} &amp;= B \cdot I \\
+K &amp;= (J_{Alice})^{x_2}
+\end{aligned}
+$$</p>
+<p>$$
+\text{ , where } q \text{ is the order of } G
+$$</p>
+<p>or</p>
+<p>$$
+\begin{aligned}
+K &amp;= (\frac{A}{g^{x_2 \cdot x_4 \cdot s}})^{x_4} \\
+&amp;= (A \cdot g^{-(x_2 \cdot x_4 \cdot s)})^{x_4} \\
+&amp;= (A \cdot (g^{x_2 \cdot x_4})^{-s})^{x_4} \\
+&amp;= (A \cdot (g^{x_2 \cdot x_4})^{q-s})^{x_4} \\
+\\
+L &amp;= g^{x_2 \cdot x_4} = (g^{x_2})^{x_4} \\
+I &amp;= L^{-s} = L^{q-s} \\
+J_{Bob} &amp;= A \cdot I \\
+K &amp;= (J_{Bob})^{x_4}
+\end{aligned}
+$$</p>
+<p>$$
+\text{ , where } q \text{ is the order of } G
+$$</p>
+<h2 id="key-confirmation"><a class="header" href="#key-confirmation">Key Confirmation</a></h2>
+<p>There are several ways to achieve explicit key confirmation.
+One simple method is to use <a href="../../two_stages.html" title="General Two-Stage Framework">hash-key</a>
+like <a href="../speke.html" title="SPEKE"><em>SPEKE</em></a> to do it:
+Alice sends Bob \( H(H(k)) \), and then Bob replies with \( H(k) \).</p>
+<p>Another method is use the session key \( k \) to
+encrypt and decrypt a random value(<a href="../../two_stages.html" title="General Two-Stage Framework">random challenge</a>)
+like <a href="../dh-eke.html" title="DH-EKE"><em>EKE</em></a>.</p>
+<h2 id="zero-knowledge-proof"><a class="header" href="#zero-knowledge-proof">Zero-Knowledge Proof</a></h2>
+<p><img src="../appendix/zkp/schnorr-signature-exponent-proof.png" alt="schnorr-signature-exponent-proof" />
+In the protocol, we need to produce a valid knowledge proof for the exponent.
+As an example, we can use <a href="../../../appendix/zkp/schnorr_signature.html" title="Schnorr Signature">Schnorr signature</a> mentioned in appendix to do it.
+To prove the knowledge of the exponent for \( X = g^x \),
+one sends out \( X \) with Zero-Knowledge proof: \( {ID, V = g^v, r = v - x \cdot h} \),
+where $ID$ is the unique user identifier,
+\( v \in Z_q \) and \( h = H(g, V, X, ID) \), \( H \) is a secure hash function.
+The receiver then can compute their own \( h' = H(g, V, X, ID) \)
+and verifies \( V = g^r \cdot X^{h'} \).
+The \( ID \) added here is to prevent Alice replaying Bob's signature back to Bob
+and vise versa.</p>
+<h3 id="why-does-j-pake-need-zero-knowledge-proof"><a class="header" href="#why-does-j-pake-need-zero-knowledge-proof">Why does J-PAKE need Zero-Knowledge Proof</a></h3>
+<p><img src="jpake-impersonation-attack-without-zkp.png" alt="jpake-impersonation-attack-without-zkp" />
+If we don't use <em>ZKP</em> here,
+<em>J-PAKE</em> will suffer impersonation-attack like <a href="../speke.html" title="SPEKE"><em>SPEKE</em></a></p>
+<h3 id="can-we-use-hash-instead-of-zkp"><a class="header" href="#can-we-use-hash-instead-of-zkp">Can we use hash instead of ZKP</a></h3>
+<p>No. To use hash to verify, the two party must have the same secret.
+If only one party has the secret, then the other has no way to verify it.
+It doesn't has the value to hash, so it has no results to compare.</p>
+<h2 id="why-x2-x4-and-s-can-not-be-0"><a class="header" href="#why-x2-x4-and-s-can-not-be-0">Why x2, x4 and s can NOT be 0?</a></h2>
+<p>$$
+K = g^{(x_1 + x_3) \cdot x_2 \cdot x_4 \cdot s}
+$$</p>
+<p>The attackers can intentionally choose \( x_2 = 0 \) or \( x_4 = 0 \)
+to force the \( K = 1 \), even he doesn't know the password.
+Therefore, the range of \( x_2, x_4 \) are specified in 1 to \( q-1 \).
+This is also the same reason for \( s \neq 0 \).</p>
+<h3 id="why-dont-we-just-select-x1-x2-x3-x4-between-1-to-q-1"><a class="header" href="#why-dont-we-just-select-x1-x2-x3-x4-between-1-to-q-1">Why don't we just select x1, x2, x3, x4 between 1 to q-1?</a></h3>
+<p>The \( K \) still can be 1 if \( x_1 + x_3 = 0 \).
+However, the probability is extremely low.
+You can still select \( x_1, x_2, x_3, x_4 \in [1, q-1] \). It's valid.
+But you will lose the combinations of
+\( x_1 = 0 \) paired to \( x_2, x_3, x_4 \neq 0 \)
+and \( x_2 = 0 \) paired to \( x_1, x_3, x_4 \neq 0 \).</p>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<p>Let take the group in appendix for <a href="../../../appendix/group_theory.html" title="Group Theory">Group Theory</a> as an example.
+\( G = { 1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18 } \) is a <a href="https://en.wikipedia.org/wiki/Schnorr_group" title="Schnorr group">Schnorr group</a>
+with prime order \( q = 11 \) and generator \( g = 9 \),
+which is the subgroup of \( Z^{\times}<em>{23} = { x \vert 0 &lt; x &lt; 23 \cap x \in N } \).
+\( Z^{\times}</em>{23} \) is a multiplicative group of integers modulo \( p \), \( p = 23 \).
+And let shared secret \( s = 7(1 \leq s \leq q-1) \).</p>
+<p>Suppose Alice first chooses \( x_1 = 9(0 \leq x_1 \leq q-1), x_2 = 3(1 \leq x_2 \leq q-1) \)
+and Bob chooses \( x_3 = 5(0 \leq x_3 \leq q-1), x_4 = 6(1 \leq x_4 \leq q-1) \),
+the final results are as follows:</p>
+<table><thead><tr><th>Rnd</th><th>Dir</th><th>Alice</th><th>Public</th><th>Bob</th></tr></thead><tbody>
+<tr><td></td><td></td><td>g = 9, q = 11, p = 23, s = 7</td><td>g = 9, q = 11, p = 23</td><td>g = 9, q = 11, p = 23, s = 7</td></tr>
+<tr><td></td><td></td><td>x1 = 9, x2 = 3</td><td></td><td>x3 = 5, x4 = 6</td></tr>
+<tr><td>1</td><td>→</td><td>gx1 = 2, gx2 = 16</td><td>gx1 = 2, gx2 = 16</td><td>gx1 = 2, gx2 = 16</td></tr>
+<tr><td>1</td><td>←</td><td>gx3 = 8, gx4 = 3</td><td>gx3 = 8, gx4 = 3</td><td>gx3 = 8, gx4 = 3</td></tr>
+<tr><td>2</td><td>→</td><td>A = 12</td><td>A = 12</td><td>A = 12</td></tr>
+<tr><td>2</td><td>←</td><td>B = 18</td><td>B = 18</td><td>B = 18</td></tr>
+<tr><td></td><td></td><td>K = 11</td><td></td><td>K = 11</td></tr>
+</tbody></table>
+<p>\( g^{x_1}, g^{x_2}, g^{x_3}, g^{x_4} \) can be directly get from
+<a href="../../../appendix/group_theory.html" title="Group Theory">example Schnorr group in appendix</a>.
+Next, we will use \( g^{x_1}, g^{x_2}, g^{x_3}, g^{x_4} \)
+to compute \( A, B, K \).
+You can try all the following computation process
+on <a href="https://defuse.ca/big-number-calculator.htm" title="Online Big Number Calculator">Online Big Number Calculator</a> to verify the results.</p>
+<p>$$
+\begin{aligned}
+A &amp;\equiv (g^{x_1} \cdot g^{x_3} \cdot g^{x_4})^{x_2 \cdot s} \pmod p\\
+&amp;\equiv (2 \cdot 8 \cdot 3)^{3 \cdot 7} \pmod {23}\\
+&amp;\equiv  (48)^{3 \cdot 7} \pmod {23}\\
+&amp;\equiv  2^{3 \cdot 7} \pmod {23}\\
+&amp;\equiv  (2^3)^7 \pmod {23}\\
+&amp;\equiv  8^7 \pmod {23}\\
+&amp;\equiv  12
+\end{aligned}
+$$</p>
+<p>$$
+\begin{aligned}
+B &amp;\equiv (g^{x_1} \cdot g^{x_2} \cdot g^{x_3})^{x_4 \cdot s} \pmod p\\
+&amp;\equiv (2 \cdot 16 \cdot 8)^{6 \cdot 7} \pmod {23}\\
+&amp;\equiv (256)^{6 \cdot 7} \pmod {23}\\
+&amp;\equiv 3^{6 \cdot 7} \pmod {23}\\
+&amp;\equiv (3^6)^7 \pmod {23}\\
+&amp;\equiv 16^7 \pmod {23}\\
+&amp;\equiv 18
+\end{aligned}
+$$</p>
+<p>To compute \( K \) for Alice, we first start with \( (g^{x_4})^{x_2} \)
+to get \( g^{x_2 \cdot x_4} \).
+Next, we can use \( (g^{x_2 \cdot x_4})^{-s} = (g^{x_2 \cdot x_4})^{q-s} \)
+to get \( g^{-(x_2 \cdot x_4 \cdot s)} \).
+Then, \( J_{Alice} = \frac{B}{g^{x_2 \cdot x_4 \cdot s}} \) can be calculated
+by \( J_{Alice} = B \cdot g^{-(x_2 \cdot x_4 \cdot s)} = B \cdot (g^{x_2 \cdot x_4})^{-s} \)
+Finally, \( K = (J_{Alice})^{x_2} \).</p>
+<p>$$
+\begin{aligned}
+L &amp;\equiv (g^{x_4})^{x_2} \pmod p\\
+&amp;\equiv 3^{3} \pmod {23}\\
+&amp;\equiv 4 \\
+\\
+I &amp;\equiv L^{-s} \equiv L^{q-s} \pmod p\\
+&amp;\equiv 4^{11-7} \equiv 4^4 \pmod {23}\\
+&amp;\equiv 3 \\
+\\
+J_{Alice} &amp;\equiv B \cdot I \pmod p\\
+&amp;\equiv 18 \cdot 3 \pmod {23}\\
+&amp;\equiv 8 \
+\\
+K &amp;\equiv (J_{Alice})^{x_2} \pmod p\\
+&amp;\equiv 8^{3} \pmod {23}\\
+&amp;\equiv 6
+\end{aligned}
+$$</p>
+<p>In the same way, Bob can start with \( (g^{x_2})^{x_4} \)
+to get \( g^{x_2 \cdot x_4} \).
+Then apply \( (g^{x_2 \cdot x_4})^{-s} = (g^{x_2 \cdot x_4})^{q-s} \)
+to \( K = (\frac{A}{g^{x_2 \cdot x_4 \cdot s}})^{x_4} = (A \cdot (g^{x_2 \cdot x_4})^{-s}))^{x_4} \).</p>
+<p>$$
+\begin{aligned}
+L &amp;\equiv (g^{x_2})^{x_4} \pmod p\\
+&amp;\equiv 16^{6} \pmod {23}\\
+&amp;\equiv 4 \\
+\\
+I &amp;\equiv L^{-s} \equiv L^{q-s} \pmod p\\
+&amp;\equiv 4^{11-7} \equiv 4^4 \pmod {23}\\
+&amp;\equiv 3 \\
+\\
+J_{Bob} &amp;\equiv A \cdot I \pmod p\\
+&amp;\equiv 12 \cdot 3 \pmod {23}\\
+&amp;\equiv 13 \\
+\\
+K &amp;\equiv (J_{Alice})^{x_4} \pmod p\\
+&amp;\equiv 13^{6} \pmod {23}\\
+&amp;\equiv 6
+\end{aligned}
+$$</p>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Password_Authenticated_Key_Exchange_by_Juggling" title="Password Authenticated Key Exchange by Juggling">Password Authenticated Key Exchange by Juggling</a></li>
+<li><a href="http://eprint.iacr.org/2010/190.pdf" title="J-PAKE: Authenticated Key Exchange Without PKI">J-PAKE: Authenticated Key Exchange Without PKI</a></li>
+<li><a href="https://defuse.ca/big-number-calculator.htm" title="Online Big Number Calculator">Online Big Number Calculator</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../../pake/balanced/jpake/intro.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../../../pake/balanced/jpake/security.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../../pake/balanced/jpake/intro.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../../../pake/balanced/jpake/security.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>DH-EKE: Diffie-Hellman Encrypted key exchange - J-PAKE over TLS</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="../../tls/tls.html"><strong aria-hidden="true">2.</strong> Introduction of TLS</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../tls/handshake.html"><strong aria-hidden="true">2.1.</strong> Handshake</a></li><li class="chapter-item expanded "><a href="../../tls/cert_auth.html"><strong aria-hidden="true">2.2.</strong> Certificate Authentication</a></li></ol></li><li class="chapter-item expanded "><a href="../../pake/pake.html"><strong aria-hidden="true">3.</strong> PAKE: Password authenticated Key Exchange</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../pake/security_requirements.html"><strong aria-hidden="true">3.1.</strong> Security Requirements</a></li><li class="chapter-item expanded "><a href="../../pake/two_stages.html"><strong aria-hidden="true">3.2.</strong> General Two-Stage Framework</a></li><li class="chapter-item expanded "><a href="../../pake/balanced/balanced_pake.html"><strong aria-hidden="true">3.3.</strong> Balanced PAKE</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../pake/balanced/dh-eke.html" class="active"><strong aria-hidden="true">3.3.1.</strong> DH-EKE: Diffie-Hellman Encrypted key exchange</a></li><li class="chapter-item expanded "><a href="../../pake/balanced/speke.html"><strong aria-hidden="true">3.3.2.</strong> SPEKE: Simple Password Exponential Key Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="../../pake/augmented/augmented_pake.html"><strong aria-hidden="true">3.4.</strong> Augmented PAKE</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../pake/augmented/srp.html"><strong aria-hidden="true">3.4.1.</strong> SRP: Secure Remote Password protocol</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../../pake/balanced/jpake/intro.html"><strong aria-hidden="true">4.</strong> J-PAKE: Password Authenticated Key Exchange by Juggling</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../pake/balanced/jpake/jpake.html"><strong aria-hidden="true">4.1.</strong> J-PAKE protocol</a></li><li class="chapter-item expanded "><a href="../../pake/balanced/jpake/security.html"><strong aria-hidden="true">4.2.</strong> Security</a></li><li class="chapter-item expanded "><a href="../../pake/balanced/jpake/comparison.html"><strong aria-hidden="true">4.3.</strong> Comparison</a></li></ol></li><li class="chapter-item expanded "><a href="../../pake/balanced/jpake/jpake_over_tls.html"><strong aria-hidden="true">5.</strong> J-PAKE over TLS</a></li><li class="chapter-item expanded "><a href="../../discussion.html"><strong aria-hidden="true">6.</strong> Discussion</a></li><li class="chapter-item expanded "><a href="../../appendix/index.html"><strong aria-hidden="true">7.</strong> Appendix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../appendix/hash.html"><strong aria-hidden="true">7.1.</strong> Hash function</a></li><li class="chapter-item expanded "><a href="../../appendix/modular_arithmetic.html"><strong aria-hidden="true">7.2.</strong> Modular Arithmetic</a></li><li class="chapter-item expanded "><a href="../../appendix/gcd.html"><strong aria-hidden="true">7.3.</strong> GCD: Greatest Common Divisors</a></li><li class="chapter-item expanded "><a href="../../appendix/group_theory.html"><strong aria-hidden="true">7.4.</strong> Group Theory</a></li><li class="chapter-item expanded "><a href="../../appendix/trapdoor_function.html"><strong aria-hidden="true">7.5.</strong> Trapdoor Function</a></li><li class="chapter-item expanded "><a href="../../appendix/dh/dh.html"><strong aria-hidden="true">7.6.</strong> Diffie-Hellman Key Exchange</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../appendix/dh/dh_multiple_parties.html"><strong aria-hidden="true">7.6.1.</strong> Diffie-Hellman with Multiple Parties</a></li><li class="chapter-item expanded "><a href="../../appendix/dh/assumptions.html"><strong aria-hidden="true">7.6.2.</strong> Diffie-Hellman Assumptions</a></li></ol></li><li class="chapter-item expanded "><a href="../../appendix/zkp/zkp.html"><strong aria-hidden="true">7.7.</strong> Zero-Knowledge Proof</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../appendix/zkp/schnorr_signature.html"><strong aria-hidden="true">7.7.1.</strong> Schnorr Signature</a></li></ol></li><li class="chapter-item expanded "><a href="../../appendix/ecc.html"><strong aria-hidden="true">7.8.</strong> Elliptic Curve Cryptography</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">J-PAKE over TLS</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="diffie-hellman-encrypted-key-exchange"><a class="header" href="#diffie-hellman-encrypted-key-exchange">Diffie-Hellman Encrypted Key Exchange</a></h1>
+<p><em>Diffie-Hellman Encrypted Key Exchange</em> is often abbreviated to <em>DH-EKE</em>.
+It's one of the <a href="https://www.cs.columbia.edu/%7Esmb/papers/neke.pdf" title="Encrypted Key Exchange: Password-based Protocols Secure Against Dictionary Attacks">original <em>EKE</em> protocols</a>
+based on <a href="../../appendix/dh/dh.html" title="Diffie-Hellman Key Exchange"><em>Diffie-Hellman Key Exchange</em></a>.</p>
+<h2 id="how-it-work"><a class="header" href="#how-it-work">How It Work</a></h2>
+<p>Suppose we have two parties, Alice and Bob,
+want to build a secure communication via
+an established insecure channel.
+Eve is a attackers who is enable to eavesdrop all the messages on the channel.</p>
+<p>Assume that Alice and Bob possess the same password \( pwd \),
+which is not leaked out and only they both know it.
+Therefore, this password can be used as a key for authentication.
+If we use this key to encrypt the data,
+only the one who knows the key can decrypt it.
+Some attackers without key are unable to pretend themselves as Alice or Bob.
+Nevertheless, the password is usually a human-memorable weak password.
+It will be easily cracked by performing an exhaustive search
+if its bits is too short.
+To make sure the shared key \( s \) is long enough,
+we use the <strong>hash value</strong> of the password as the key instead.
+Thus, the shared secret key
+$$
+s = hash(pwd)
+$$</p>
+<h3 id="basic-concept"><a class="header" href="#basic-concept">Basic Concept</a></h3>
+<p><img src="DH-EKE.png" alt="DH-EKE" /></p>
+<p>The basic idea is to use the shared secret key \( s \) to
+protect the public key swap of <a href="../../appendix/dh/dh.html" title="Diffie-Hellman Key Exchange"><em>Diffie-Hellman Key Exchange</em></a>.
+Only the one who possess the key \( s \) can encrypt and decrypt the public keys.
+They still can derive a symmetric session key \( k \) on both sides
+for conversation.</p>
+<h3 id="with-challengeresponse-authentication"><a class="header" href="#with-challengeresponse-authentication">With Challenge–Response Authentication</a></h3>
+<p>In fact, the <em>DH-EKE</em> is integrated by <a href="../../appendix/dh/dh.html" title="Diffie-Hellman Key Exchange"><em>Diffie-Hellman</em></a> and
+<a href="https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication" title="Challenge–response authentication">challenge–response authentication</a>.
+The <em>challenge</em> is presented by one party,
+and another party must reply a correct answer to be authenticated.</p>
+<p><img src="DH-EKE-1.png" alt="DH-EKE-1" /></p>
+<p>The first step of <em>DH-EKE</em> is very similar to <a href="../../appendix/dh/dh.html" title="Diffie-Hellman Key Exchange"><em>DH</em></a>.
+Alice picks a random number \( a \in [1, p-1] \) as her <strong>private key</strong>
+and use it to generate a <strong>public key</strong>:
+$$
+A \equiv g^a \pmod p
+$$</p>
+<p>Then she sends the encrypted value of the public key:
+$$
+A_{enc} = Enc_s(A)
+$$
+to Bob. After receiving \( A_{enc} \), Bob gets Alice's public key \( A\)
+by decrypting \( A_{enc} \):
+$$
+A = Dec_s(A_{enc})
+$$</p>
+<p>Then Bob picks a random number \( b \in [1, p-1] \) as his <strong>private key</strong>
+to compute a <strong>session key</strong>:
+$$
+k \equiv A^b \equiv g^{ab} \pmod p
+$$
+for encryption in this communication.</p>
+<p><img src="DH-EKE-2.png" alt="DH-EKE-2" /></p>
+<p>Next, Bob generates his <strong>public key</strong> \( B \equiv g^b \pmod p \)
+and a random challenge \( challenge_{Bob} \).
+The \( challenge_{Bob} \) is then encrypted by the session key \( k \)
+into a value \( C_{Bob} \):
+$$
+C_{Bob} = Enc_k(challenge_{Bob})
+$$</p>
+<p>Then, Bob encrypts his public key \( B \) with \( C_{Bob} \)
+into \( B_{enc} \) by \( s \) and sends it to Alice.
+$$
+B_{enc} = Enc_s(B, C_{Bob})
+$$</p>
+<p>Alice decrypts the received \( B_{enc} \)
+to get Bob's public key \( B \) and \( C_{Bob} \).
+$$
+B, C_{Bob} = Dec_s(B_{enc})
+$$</p>
+<p>Then, Alice can compute a same <strong>session key</strong> \( k \) as Bob
+by her own private key,
+$$
+k \equiv B^a \equiv g^{ab} \pmod p
+$$</p>
+<p><img src="DH-EKE-3.png" alt="DH-EKE-3" /></p>
+<p>After Alice has \( k \), she can use it to decrypt \( C_{Bob} \)
+to get \( challenge^{Alice}_{Bob} \).
+The \( challenge^{Alice}_{Bob} \) here represents that
+Alice's decoded value of Bob's challenge:</p>
+<p>$$
+challenge^{Alice}_{Bob} = Dec_k(C_{Bob})
+$$</p>
+<p>Next, Alice randomly generates her own challenge \( challenge_{Alice} \)
+and then use it to encrypt with Bob's challenge \( challenge_{Bob} \)
+into a value \( C_{mix} \) by the session key \( k \)</p>
+<p>$$
+C_{mix} = Enc_k(challenge_{Alice}, challenge^{Alice}_{Bob})
+$$</p>
+<p>Then, Alice sends \( C_{mix} \) to Bob.</p>
+<p><img src="DH-EKE-4.png" alt="DH-EKE-4" /></p>
+<p>Later, Bob decrypts the \( C_{mix} \)
+to output \( challenge^{Bob}_{Alice} \) and \( challenge^{Alice}_{Bob} \).
+The \( challenge^{Bob}_{Alice} \) here represents that
+Bob's decoded value of Alice's challenge.
+$$
+challenge^{Bob}_{Alice}, challenge^{Alice}_{Bob} = Dec_k(C_{mix})
+$$</p>
+<p>In this step, Bob can authenticate Alice is valid or not
+by checking her decoded value of his own challenge, \( challenge^{Alice}_{Bob} \):</p>
+<p>$$
+valid(Alice) =
+\begin{cases}
+true,  &amp; \text{if } challenge^{Alice}_{Bob} = challenge_{Bob} \\
+false, &amp; \text{otherwise}
+\end{cases}
+$$</p>
+<p>If Alice is invalid, then Bob drops the session.
+Otherwise, Bob continue the protocols.</p>
+<p>Next, Bob needs to prove his identification to Alice.
+He encrypts \( challenge^{Bob}_{Alice} \) into \( C_{Alice} \):
+$$
+C_{Alice} = Enc_k(challenge^{Bob}_{Alice})
+$$
+and send it to Alice.</p>
+<p>After receiving \( C_{Alice} \), Alice decrypts it to get Bob's decode value
+of her own challenge:
+$$
+challenge^{Bob}_{Alice} = Dec_k(C_{Alice})
+$$</p>
+<p>Alice now is also able to authenticate Bob:</p>
+<p>$$
+valid(Bob) =
+\begin{cases}
+true,  &amp; \text{if } challenge^{Bob}_{Alice} = challenge_{Alice} \\
+false, &amp; \text{otherwise}
+\end{cases}
+$$</p>
+<p>Similarly, if Bob is invalid, then Alice drops the session.
+Otherwise, the protocol finishes.</p>
+<p>Finally, Alice and Bob authenticate mutually and they both
+have a same session key \( k \) that can be used for encryption or decryption.</p>
+<h3 id="summary"><a class="header" href="#summary">Summary</a></h3>
+<ol>
+<li>Alice generates a private-public key pair and sends the encrypted public key to Bob
+<ol>
+<li>Alice picks a random number \( a \in [1, p-1] \) as her private key</li>
+<li>Alice generates a public key \( A \equiv g^a \pmod p \)</li>
+<li>Alice encrypts her public key by shared secret key \( s \)</li>
+<li>Alice sends \( A_{enc} = Enc_s(A) \) to Bob.</li>
+</ol>
+</li>
+<li>Bob generates a private-public key pair and random challenge, computes the symmetric session key by his private key, and then sends the encrypted public key with the challenge to Alice
+<ol>
+<li>Bob decrypts \( A_{enc} \) to get Alice's public key \( A \) by shared secret key \( s \)</li>
+<li>Bob picks a random number \( b \in [1, p-1] \) as his private key</li>
+<li>Bob computes a session key \( k \equiv A^b \equiv g^{ab} \pmod p \)</li>
+<li>Bob generates a public key \( B \equiv g^b \pmod p \)</li>
+<li>Bob randomly generates a \( challenge_{Bob} \)</li>
+<li>Bob encrypts \( challenge_{Bob} \) to \( C_{Bob} \) by \( k \)</li>
+<li>Bob sends \( B_{enc} = Enc_s(B, C_{Bob}) \) to Alice.</li>
+</ol>
+</li>
+<li>Alice get Bob's public key and challenge, computes the symmetric session key by her private key, then generates her random challenge and send Bob's challenge back with her own one for authentication
+<ol>
+<li>Alice decrypts the received \( B_{enc} \) to get \( B, C_{Bob} \) by shared secret key \( s \)</li>
+<li>Alice computes a session key \( k \equiv B^a \equiv g^{ab} \pmod p \)</li>
+<li>Alice decrypts \( C_{Bob} \) to get Bob's challenge \( challenge_{Bob} \) by \( k \)</li>
+<li>Alice randomly generates a \( challenge_{Alice} \)</li>
+<li>Alice encrypts \( challenge_{Alice}, challenge_{Bob} \) to \( C_{mix} \) by \( k \)</li>
+<li>Alice sends \( C_{mix} = Enc_k(challenge_{Alice}, challenge_{Bob}) \) to Bob</li>
+</ol>
+</li>
+<li>Bob authenticates Alice by checking his own challenge with the received one
+<ol>
+<li>Bob decrypts the received \( C_{mix} \) to get \( challenge_{Alice}, challenge_{Bob} \) by \( k \)</li>
+<li>Bob checks whether or not the received \( challenge_{Bob} \) is same as his original one</li>
+<li>Alice is authenticated if the answer is yes. Otherwise, drops session.</li>
+<li>Bob encrypts the received \( challenge_{Alice} \) to \( C_{Alice} \) by \( k \)</li>
+<li>Bob sends \( C_{Alice} = Enc_k(challenge_{Alice}) \)</li>
+</ol>
+</li>
+<li>Alice authenticates Bob by checking his own challenge with the received one
+<ol>
+<li>Alice decrypts the received \( C_{Alice} \) to get \( challenge_{Alice} \) by \( k \)</li>
+<li>Alice checks whether or not received \( challenge_{Alice} \) is same as her original one</li>
+<li>Bob is authenticated if the answer is yes. Otherwise, drops session.</li>
+</ol>
+</li>
+</ol>
+<h2 id="security-issues"><a class="header" href="#security-issues">Security Issues</a></h2>
+<h3 id="short-exponents"><a class="header" href="#short-exponents">Short Exponents</a></h3>
+<p>The packets are transmitted byte-by-byte,
+so its size of bits must be 8's multiple(1 byte = 8-bits).
+Thus, if the modulo \( p \) is \( n \) bits, then the group must \( n \) bits.
+The private key, the public key are all \( n \) bits.</p>
+<p>Therefore, if \( n \neq 8 \cdot k \), where \( k \in N \),
+then <strong>some of bits are predictable</strong>. They must be \( 0 \).
+For example, if \( p = 263 = 107_{16} = 0000000100000111_{2} \),
+then we know the range of the group is \( [1, 262] \) and the data is 2-bytes.
+The first \( 7 \) bits in the first byte are all \( 0 \) because the elements in the group
+are smaller than \( 0000000100000111_{2} \).</p>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<ul>
+<li><a href="https://www.cs.columbia.edu/%7Esmb/papers/neke.pdf" title="Encrypted Key Exchange: Password-based Protocols Secure Against Dictionary Attacks">Encrypted Key Exchange: Password-based Protocols Secure Against Dictionary Attacks</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../pake/balanced/balanced_pake.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../../pake/balanced/speke.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../pake/balanced/balanced_pake.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../../pake/balanced/speke.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

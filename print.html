@@ -1,0 +1,2757 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>J-PAKE over TLS</title>
+        <meta name="robots" content="noindex" />
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Overview</a></li><li class="chapter-item expanded "><a href="tls/tls.html"><strong aria-hidden="true">2.</strong> Introduction of TLS</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tls/handshake.html"><strong aria-hidden="true">2.1.</strong> Handshake</a></li><li class="chapter-item expanded "><a href="tls/cert_auth.html"><strong aria-hidden="true">2.2.</strong> Certificate Authentication</a></li></ol></li><li class="chapter-item expanded "><a href="pake/pake.html"><strong aria-hidden="true">3.</strong> PAKE: Password authenticated Key Exchange</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pake/security_requirements.html"><strong aria-hidden="true">3.1.</strong> Security Requirements</a></li><li class="chapter-item expanded "><a href="pake/two_stages.html"><strong aria-hidden="true">3.2.</strong> General Two-Stage Framework</a></li><li class="chapter-item expanded "><a href="pake/balanced/balanced_pake.html"><strong aria-hidden="true">3.3.</strong> Balanced PAKE</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pake/balanced/dh-eke.html"><strong aria-hidden="true">3.3.1.</strong> DH-EKE: Diffie-Hellman Encrypted key exchange</a></li><li class="chapter-item expanded "><a href="pake/balanced/speke.html"><strong aria-hidden="true">3.3.2.</strong> SPEKE: Simple Password Exponential Key Exchange</a></li></ol></li><li class="chapter-item expanded "><a href="pake/augmented/augmented_pake.html"><strong aria-hidden="true">3.4.</strong> Augmented PAKE</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pake/augmented/srp.html"><strong aria-hidden="true">3.4.1.</strong> SRP: Secure Remote Password protocol</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="pake/balanced/jpake/intro.html"><strong aria-hidden="true">4.</strong> J-PAKE: Password Authenticated Key Exchange by Juggling</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pake/balanced/jpake/jpake.html"><strong aria-hidden="true">4.1.</strong> J-PAKE protocol</a></li><li class="chapter-item expanded "><a href="pake/balanced/jpake/security.html"><strong aria-hidden="true">4.2.</strong> Security</a></li><li class="chapter-item expanded "><a href="pake/balanced/jpake/comparison.html"><strong aria-hidden="true">4.3.</strong> Comparison</a></li></ol></li><li class="chapter-item expanded "><a href="pake/balanced/jpake/jpake_over_tls.html"><strong aria-hidden="true">5.</strong> J-PAKE over TLS</a></li><li class="chapter-item expanded "><a href="discussion.html"><strong aria-hidden="true">6.</strong> Discussion</a></li><li class="chapter-item expanded "><a href="appendix/index.html"><strong aria-hidden="true">7.</strong> Appendix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="appendix/hash.html"><strong aria-hidden="true">7.1.</strong> Hash function</a></li><li class="chapter-item expanded "><a href="appendix/modular_arithmetic.html"><strong aria-hidden="true">7.2.</strong> Modular Arithmetic</a></li><li class="chapter-item expanded "><a href="appendix/gcd.html"><strong aria-hidden="true">7.3.</strong> GCD: Greatest Common Divisors</a></li><li class="chapter-item expanded "><a href="appendix/group_theory.html"><strong aria-hidden="true">7.4.</strong> Group Theory</a></li><li class="chapter-item expanded "><a href="appendix/trapdoor_function.html"><strong aria-hidden="true">7.5.</strong> Trapdoor Function</a></li><li class="chapter-item expanded "><a href="appendix/dh/dh.html"><strong aria-hidden="true">7.6.</strong> Diffie-Hellman Key Exchange</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="appendix/dh/dh_multiple_parties.html"><strong aria-hidden="true">7.6.1.</strong> Diffie-Hellman with Multiple Parties</a></li><li class="chapter-item expanded "><a href="appendix/dh/assumptions.html"><strong aria-hidden="true">7.6.2.</strong> Diffie-Hellman Assumptions</a></li></ol></li><li class="chapter-item expanded "><a href="appendix/zkp/zkp.html"><strong aria-hidden="true">7.7.</strong> Zero-Knowledge Proof</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="appendix/zkp/schnorr_signature.html"><strong aria-hidden="true">7.7.1.</strong> Schnorr Signature</a></li></ol></li><li class="chapter-item expanded "><a href="appendix/ecc.html"><strong aria-hidden="true">7.8.</strong> Elliptic Curve Cryptography</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">J-PAKE over TLS</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="j-pake-over-tls"><a class="header" href="#j-pake-over-tls">J-PAKE over TLS</a></h1>
+<p>This is a short introduction of building a secure channel between devices.</p>
+<h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
+<p>The motivation to write this is to note:
+How to build secure channels between devices?</p>
+<p>We encounter this problem when doing work for Firefox OS:</p>
+<blockquote>
+<p>How to build a secure channel between Firefox Android and Firefox OS TV?</p>
+</blockquote>
+<p>To make Firefox Android as a remote controller of Firefox OS TV,
+building a secure channel is definitely the first step to do.
+However, the Firefox Android and Firefox OS TV are all in local network,
+which has no any <strong>Public Key Infrastructure(PKI)</strong> there,
+so it's impossible to use standard <strong>TLS</strong> and <strong>https</strong>
+to build our connection.</p>
+<p>To overcome this problem, we introduce a method, <strong>J-PAKE over TLS</strong>,
+as our solution.</p>
+<p>In brief, we want to use <a href="tls/tls.html">TLS</a>,
+but we don't have a PKI in local network.
+The solution we propose here is:</p>
+<ol>
+<li>Build a confidential connection without authentication</li>
+<li>Use <strong>PAKE</strong> to authenticate the devices</li>
+</ol>
+<h3 id="demo"><a class="header" href="#demo">Demo</a></h3>
+<p><a href="https://www.youtube.com/watch?v=nVu4rxjqtOM&amp;list=PLSVOWZrQzZlY07b3gR6ONDECSsh-83w9N" title="FxOS Remote Control"><img src="http://img.youtube.com/vi/Hqv_EnqQ86Y/0.jpg" alt="FxOS Remote Control" title="FxOS Remote Control" /></a></p>
+<h2 id="j-pake-password-authenticated-key-exchange-by-juggling"><a class="header" href="#j-pake-password-authenticated-key-exchange-by-juggling">J-PAKE: Password Authenticated Key Exchange by Juggling</a></h2>
+<p><strong>Password Authenticated Key Exchange by Juggling(J-PAKE)</strong>
+is a <strong>password-authenticated key agreement</strong> protocol
+with <strong>Zero-Knowledge Proof(ZKP)</strong> mechanism.
+By authenticating the preestablished password on both side,
+there is no longer need <em>PKI</em> for authentication.</p>
+<h2 id="tls-transport-layer-security"><a class="header" href="#tls-transport-layer-security">TLS: Transport Layer Security</a></h2>
+<p><em>TLS</em> is a cryptographic protocol to provide secure communication
+over network.
+Nowadays, <em>TLS</em> is a well-established crypto module
+in widespread use on major web sites and browsers
+for web-browsing, email, messaging applications
+to provide <strong>privacy</strong> and <strong>integrity</strong>
+of secure communication between devices.</p>
+<h2 id="structure-of-this-book"><a class="header" href="#structure-of-this-book">Structure of This Book</a></h2>
+<p>First, we will talk how <em>TLS</em> works, including its requirements and limits.
+Next, we need to figure out what is <strong>Password authenticated Key Exchange(PAKE)</strong>
+and its properties. It is base of <em>J-PAKE</em>.
+Then, to overcome the drawbacks of <em>TLS</em> and <em>PAKE</em>, <em>J-PAKE</em> is introduced.
+Therefore, we have sequential chapters for  <em>TLS</em>, <em>PAKE</em>, and <em>J-PAKE</em>.</p>
+<h2 id="feel-free-to-correct-me"><a class="header" href="#feel-free-to-correct-me">Feel Free to Correct Me</a></h2>
+<p>Well, I study this topic only about one month,
+it's hard to make sure that there is no anything wrong.
+In addition, some sentences might be weird
+or the grammar needs to be revised
+since English is not my native language.
+Please feel free to correct me
+if you see anything that can enhance this book :)</p>
+<h2 id="talk-slides"><a class="header" href="#talk-slides">Talk slides</a></h2>
+<p>The Magic behind Remotecontrol
+Service of Firefox OS TV: <a href="https://docs.google.com/presentation/d/15iXd4ZXy9Y1uKdXkuFsdoqXAzw7Y4pUFKlDaNiAFkb0/edit?usp=sharing" title="The Magic behind Remote-control Service of Firefox OS TV">slides here</a></p>
+<!-- [RemoteControlURL]: https://www.youtube.com/playlist?list=PLSVOWZrQzZlY07b3gR6ONDECSsh-83w9N "FxOS Remote Control" --><div style="break-before: page; page-break-before: always;"></div><h1 id="tls"><a class="header" href="#tls">TLS</a></h1>
+<p>TLS is a middle layer between HTTP and TCP
+<img src="tls/tls-in-osi.png" alt="tls-in-osi" /></p>
+<h2 id="https"><a class="header" href="#https">HTTPS</a></h2>
+<p><img src="tls/https-url.png" alt="https-url" /></p>
+<p>HTTPS is HTTP over TLS</p>
+<h2 id="concern"><a class="header" href="#concern">Concern</a></h2>
+<ul>
+<li>phishing websites</li>
+<li>fake PKI</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="handshake"><a class="header" href="#handshake">Handshake</a></h1>
+<p><img src="tls/tls-handshake.png" alt="tls-handshake" /></p>
+<p>Diagram is generated by <a href="https://goo.gl/BTLkqf" title="WebSequenceDiagrams.com">WebSequenceDiagrams.com</a></p>
+<h2 id="client-hello"><a class="header" href="#client-hello">Client Hello</a></h2>
+<p>The client and the server support several versions of TLS.
+To make sure they have a matched version to communicate,
+the client first will send its list of supported TLS versions.</p>
+<p>In the same manner,
+the client and the server support many ciphers and compression and etc.,
+some might be same, some might be different.
+To make sure they can use the same methods on both side,
+the client need to send its lists of supported ciphers/compression/etc.
+to the server.</p>
+<p>In addition, the client will generate a random number <strong>x</strong>.
+It will be further used to generate the session key.</p>
+<p>In summary, the client will send</p>
+<ul>
+<li>supported TLS versions</li>
+<li>supported ciphers</li>
+<li>supported compression</li>
+<li>supported ...</li>
+<li>a random number <strong>x</strong></li>
+</ul>
+<h2 id="server-hellowith-server-done"><a class="header" href="#server-hellowith-server-done">Server Hello(with Server Done)</a></h2>
+<p>After receiving the <em>Client Hello</em>, server will reply
+messages from <em>Server Hello</em> to <em>Server Done</em>.
+Some might sends each message respectively,
+while the other might send just one message
+including <em>Server Hello</em> and <em>Server Done</em>.
+The <em>Server Hello</em> and <em>Server Done</em> packet contains only head without content.</p>
+<p>The server will search its TLS versions, ciphers, comparison, etc.
+and choose the protocols matched with the client.
+If there is no matched protocols of them, then the communication will be dropped.
+Otherwise, the server will reply the matched protocols to the client.
+The replied messages also include server's certificate,
+which is a proof for server's identification.
+The certificate is given by a <strong>Certificate Authority</strong>.
+It will provide certificates to applied parties if they pass strict examines.</p>
+<p>The server side will also pick a random number <strong>y</strong>
+as an input for generating the session key.</p>
+<p>The server can decide whether or not it needs the client's certificate
+to prove the identification.
+Some applications with higher security requirements may need to ask.</p>
+<p>In summary, the server will reply</p>
+<ul>
+<li>chosen TLS version</li>
+<li>chosen ciphers</li>
+<li>chosen compression</li>
+<li>chosen ...</li>
+<li>server's certificate</li>
+<li>a random number <strong>y</strong></li>
+<li>[ask for client's certificate]</li>
+</ul>
+<h2 id="client-key-exchange"><a class="header" href="#client-key-exchange">Client Key Exchange</a></h2>
+<p>The client needs to verify the server's certificate to check its identification.
+If the certificate is invalid, then the client will show a alert
+and let user decides whether the communication should be continued.</p>
+<p>Next, the client will generate the third random number <strong>z</strong>
+in this communication.
+Similarly, the <strong>z</strong> is also used to produce the final session key.
+In this time, the <strong>z</strong> is encrypted by the server's public key
+before sending out.
+The server's public key can be obtained from the server's certificate.</p>
+<p>If the server asks the client's certificate,
+then the client needs to add its certificate into the replied message.</p>
+<p>In summary, the client will reply</p>
+<ul>
+<li>encrypted random number <strong>z</strong></li>
+<li>[client's certificate]</li>
+</ul>
+<h2 id="client-finish"><a class="header" href="#client-finish">Client Finish</a></h2>
+<p>From the server's reply, the client can know which TLS version, ciphers,
+and other matched methods they will use.
+Thus, the client will add a <em>Change Cipher Spec</em> message
+to notify the server that the following communication will use the chosen
+cipher to encrypt/decrypt the raw data based on their matched TLS version.</p>
+<p>After adding <em>Change Cipher Spec</em> message, the client will
+encrypt a <em>FINISH</em> message by the session key and send it to the server.
+The session key is produced by the random numbers <strong>x, y, z</strong>.</p>
+<p>In summary, the client will send</p>
+<ul>
+<li><em>Change Cipher Spec</em> message</li>
+<li>FINISH</li>
+</ul>
+<h2 id="server-finish"><a class="header" href="#server-finish">Server Finish</a></h2>
+<p>On server side, if it requires the client's certificate,
+it will verify it upon receiving it.</p>
+<p>The same session key can also be derived
+from the random numbers <strong>x, y, z</strong>,
+where the <strong>z</strong> can be obtained
+by decrypting the client's <em>Client Key Exchange</em> messages by its private key.</p>
+<p>After computing the session key, the server will also
+use a <em>Change Cipher Spec</em> message to notify the client
+that the following messages will be encrypted.
+By the same token, the message will be sent
+with an encrypted <em>FINISH</em> message by using the derived session key.</p>
+<p>In summary, the server will send</p>
+<ul>
+<li><em>Change Cipher Spec</em> message</li>
+<li>FINISH</li>
+</ul>
+<h2 id="authentication"><a class="header" href="#authentication">Authentication</a></h2>
+<p>If the both sides can decrypt the FINISH message based on the previous
+handshake messages, then it means that the valid channel
+is established successfully.
+They can use the session key in the following communication.</p>
+<h2 id="secret-keys"><a class="header" href="#secret-keys">Secret Keys</a></h2>
+<p><img src="tls/tls-secret-keys.png" alt="tls-secret-keys" /></p>
+<h3 id="why-does-tls-need-to-generate-a-session-key-can-it-use-the-public-key-directly"><a class="header" href="#why-does-tls-need-to-generate-a-session-key-can-it-use-the-public-key-directly">Why does TLS need to generate a session key? Can it use the public key directly?</a></h3>
+<p>The symmetric encryption is faster than the asymmetric one.
+TLS protocol allows the engaging parties to negotiate a symmetric key
+to boost the encryption instead of directly using
+asymmetric public-private key pair.</p>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<ul>
+<li><a href="https://segmentfault.com/a/1190000002554673" title="SSL/TLS原理详解">SSL/TLS原理详解</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html" title="SSL/TLS协议运行机制的概述">SSL/TLS协议运行机制的概述</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="certificate-authentication"><a class="header" href="#certificate-authentication">Certificate Authentication</a></h1>
+<h2 id="certificate"><a class="header" href="#certificate">Certificate</a></h2>
+<h2 id="certificate-authority"><a class="header" href="#certificate-authority">Certificate Authority</a></h2>
+<h2 id="certificate-authentication-1"><a class="header" href="#certificate-authentication-1">Certificate Authentication</a></h2>
+<p><img src="tls/certificate.png" alt="certificate" /></p>
+<p>The attackers is impossible to substitute the public key for their own one
+because the public key will be encrypted by the CA's private key.
+If the attackers replace the public key with their own one,
+then the hash value of the <em>Certificate</em> will be different from
+the decrypted <em>Signature</em>.
+Thus, the certificate can be a valid proof for authenticating the identification
+unless the private key paired with the public key is leaked out.</p>
+<h2 id="references-1"><a class="header" href="#references-1">References</a></h2>
+<ul>
+<li><a href="http://www.tldp.org/HOWTO/SSL-Certificates-HOWTO/x64.html" title="SSL Certificates HOWTO">SSL Certificates HOWTO</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="pake-password-authenticated-key-exchange"><a class="header" href="#pake-password-authenticated-key-exchange">PAKE: Password Authenticated Key Exchange</a></h1>
+<p><em>Password-Authenticated Key Exchange</em> is a protocol for multiple parties
+to establish a shared cryptographic keys
+based on their same knowledge of a <strong>password</strong>.
+All parties can compute the exactly same result
+from the password and the public messages exchanged among them.
+The unauthorized party who doesn't possess the password has no way
+to get the password from the communication channel.
+With the password, there is no need for a trusted third party
+like <em>public key infrastructure</em>(PKI) for authentication.</p>
+<p><em>PAKE</em> prevents attacks from an eavesdropper or man-in-middle.
+The attackers are unable to guess the password
+without interaction with engaging parties.
+It can use weak <strong>human-memorable</strong> passwords to generate
+a high-entropy strong key to encrypt/decrypt,
+so it's very convenient in use and widely deployed
+in many commercial applications today.</p>
+<h2 id="applications"><a class="header" href="#applications">Applications</a></h2>
+<ul>
+<li><strong>Mutual authentication by low-entropy passwords</strong>:
+<em>PAKE</em> can generate a high-entropy cryptographically strong key from
+low-entropy passwords for engaging parties to authenticate mutually.</li>
+<li><strong>Alternative for computationally expensive authentication</strong>:
+For low-end devices, it's computationally expensive to use asymmetric encryption
+like <em>RSA</em>. It would be easy to use a simple symmetric encryption protocol
+like <em>pake</em> to do it.</li>
+</ul>
+<h2 id="pake-family"><a class="header" href="#pake-family">PAKE Family</a></h2>
+<p>There are so many <em>PAKE</em> protocol had been proposed.
+In our content, only two protocols will be mentioned.
+One is <em>Balanced PAKE</em>, and the other is <em>Augmented PAKE</em>.</p>
+<p>Overview of <em>PAKE</em> family we will mention:</p>
+<ul>
+<li>Balanced PAKE
+<ul>
+<li>EKE: Encrypted Key Exchange
+<ul>
+<li>DH-EKE: Diffie-Hellman Encrypted Key Exchange</li>
+</ul>
+</li>
+<li>SPEKE: Simple Password Exponential Key Exchange</li>
+<li>J-PAKE: Password Authenticated Key Exchange by Juggling</li>
+</ul>
+</li>
+<li>Augmented PAKE
+<ul>
+<li>SRP: Secure Remote Password protocol</li>
+</ul>
+</li>
+</ul>
+<h2 id="goal-of-pake"><a class="header" href="#goal-of-pake">Goal of PAKE</a></h2>
+<p>Establish a shared key among devices for encryption without PKI</p>
+<h2 id="diffie-hellman-key-exchange"><a class="header" href="#diffie-hellman-key-exchange">Diffie-Hellman Key Exchange</a></h2>
+<p>Many protocols of <em>PAKE</em> are variant of <a href="pake/../appendix/dh/dh.html" title="Diffie-Hellman Key Exchange"><em>Diffie-Hellman Key Exchange</em></a>.
+In order to understand the <em>balance PAKE</em> such as <em>DH-EKE</em>, <em>SPEKE</em>,
+or the <em>augmented PAKE</em> such as <em>SRP</em>, the first thing you need to do is to
+understand the underlying <a href="pake/../appendix/dh/dh.html" title="Diffie-Hellman Key Exchange"><em>Diffie-Hellman Key Exchange</em></a>.
+For those who don't know it, please read <a href="pake/../appendix/dh/dh.html" title="Diffie-Hellman Key Exchange"><em>Diffie-Hellman Key Exchange</em></a>
+in appendix. If you are already familiar with it, just skip it
+and keep on reading.</p>
+<h2 id="references-2"><a class="header" href="#references-2">References</a></h2>
+<ul>
+<li><a href="http://cryptowiki.net/index.php?title=Password-authenticated_key_agreement" title="Password-authenticated key agreement">Password-authenticated key agreement</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="security-requirements-for-pake"><a class="header" href="#security-requirements-for-pake">Security requirements for PAKE</a></h1>
+<p>Any <em>PAKE</em> protocol should meet the following requirements:</p>
+<ul>
+<li><strong>Off-line dictionary attack resistance</strong>:
+It does NOT leak any information for passive/active attackers
+to allow them to perform offline-exhaustive search to find the private secrets.</li>
+<li><strong>On-line dictionary attack resistance</strong>:
+It gives an active attacker only one chance to test
+the private secret per protocol.</li>
+<li><strong>Forward secrecy</strong>:
+It keeps the session key secure
+even the private secrets is leaked later.</li>
+<li><strong>Known-session security</strong>:
+If one session key is leaked,
+it does NOT affect to other established session keys.</li>
+</ul>
+<p>We will introduce them in following contents.
+Nevertheless, before reading them,
+we should first have some basic ideas about
+what is the passive attacker and active attacker.</p>
+<h2 id="passive-attacker-and-active-attacker"><a class="header" href="#passive-attacker-and-active-attacker">Passive Attacker and Active Attacker</a></h2>
+<p>We get started from picking up some knowledge of the attackers</p>
+<h3 id="passive-attacker-eve-a-eavesdropper"><a class="header" href="#passive-attacker-eve-a-eavesdropper">Passive Attacker: Eve, a eavesdropper</a></h3>
+<p><img src="pake/passive-attacker.png" alt="passive-attacker" title="Passive Attacker" />
+Suppose Eve is a passive attacker
+for the communication between Alice and Bob,
+then she can <strong>see all messages on the channel</strong>
+but she <strong>can't modify them</strong>.</p>
+<p>There are so many potential passive attackers in the real world network,
+for example, The Internet provider, the government, WiFi sniffer,
+Someone else on the same network as you.</p>
+<p>If your don't encrypt your messages on networks,
+it's easy to know what youtube you are watching,
+your bank accounts, your credit card numbers,
+or other personal information.</p>
+<h3 id="active-attacker-eve"><a class="header" href="#active-attacker-eve">Active Attacker: Eve</a></h3>
+<p><img src="pake/active-attacker.png" alt="active-attacker" title="Active Attacker" /></p>
+<p>The active attacker will talk to your system directly.
+If Eve is active attacker, then she will interact with Alice or Bob directly.
+She will try to build a protocol with Alice by pretending to be Bob
+to gain access or to gain greater privileges than she is authorized for.
+She might randomly guessing the passphrase that Alice use to authenticate Bob.</p>
+<p>To prevent from this, we usually limit the number to attempts
+for authentication or building connection
+(e.g., You have only three attempts to login to your accounts).</p>
+<p>To get more detail, please see <a href="https://en.wikipedia.org/wiki/Attack_(computing)#Types_of_attacks" title="Types of attacks">types of attacks on WiKi</a>.</p>
+<h4 id="active-attacker-in-pake"><a class="header" href="#active-attacker-in-pake">Active attacker in PAKE</a></h4>
+<p>The active attacker in <em>PAKE</em> means that
+she is able to directly engage in key exchange.</p>
+<h2 id="off-line-dictionary-attack-resistance"><a class="header" href="#off-line-dictionary-attack-resistance">Off-line Dictionary Attack Resistance</a></h2>
+<p>No matter the attacker is active or passive,
+the communication between parties must NOT leak any data
+that allows attackers to learn the private secret
+by performing offline-exhaustive search.</p>
+<p>For example, hash value might leak some information about the private data.
+If the attacker know what hash function you used, then he can list all of
+the pairs to crack your private data by searching the matched hash value
+(Given hash value: 'ujm', then the private data 'n' can be found).</p>
+<table><thead><tr><th>private data</th><th>hash value</th></tr></thead><tbody>
+<tr><td>0</td><td>qaz</td></tr>
+<tr><td>1</td><td>wsx</td></tr>
+<tr><td>....</td><td>...</td></tr>
+<tr><td>n</td><td>ujm</td></tr>
+<tr><td>.....</td><td>.......</td></tr>
+</tbody></table>
+<h2 id="on-line-dictionary-attack-resistance"><a class="header" href="#on-line-dictionary-attack-resistance">On-line Dictionary Attack Resistance</a></h2>
+<p>If the attacker directly start sending a key exchange request,
+there is no way to prevent that
+the attacker tries a guess of the private secrets.
+However, the attacker should have only one try per communication,
+and the successive failed attempts should be easily detected
+and then blocked.</p>
+<h2 id="forward-secrecy"><a class="header" href="#forward-secrecy">Forward Secrecy</a></h2>
+<p>After running <em>PAKE</em> protocol,
+the engaging parties will have a shared secret key.
+However, no one can guarantee that this shared secret won't be disclosed.
+The past session keys must be protected
+when the the shared secret is later leaked.</p>
+<h2 id="known-session-security"><a class="header" href="#known-session-security">Known-session Security</a></h2>
+<p>If an attacker can compromise a session,
+then all the session-specific secrets may be leaked.
+Nevertheless, the impact should be minimized.
+The security of other established sessions must NOT be affected
+by the compromised session.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="general-two-stage-framework"><a class="header" href="#general-two-stage-framework">General Two-Stage Framework</a></h1>
+<p><em>PAKE</em> has a general two-stage framework:</p>
+<ul>
+<li>Key Establishment Protocol</li>
+<li>Key Confirmation Protocol</li>
+</ul>
+<h2 id="key-establishment-protocol"><a class="header" href="#key-establishment-protocol">Key Establishment Protocol</a></h2>
+<p>In first stage, the engaging parties will negotiate to produce a session key
+for their communication. One most common method is
+<a href="pake/../appendix/dh/dh.html" title="Diffie-Hellman Key Exchange">Diffie-Hellman Key Exchange</a>,
+like the first stage of <a href="pake/balanced/dh-eke.html" title="DH-EKE"><em>DH-EKE</em></a> and <a href="pake/balanced/speke.html" title="SPEKE"><em>SPEKE</em></a>.</p>
+<h2 id="key-confirmation-protocol"><a class="header" href="#key-confirmation-protocol">Key Confirmation Protocol</a></h2>
+<p>In second stage, the engaging parties will authenticate each other.</p>
+<h3 id="challengeresponse-authentication"><a class="header" href="#challengeresponse-authentication">Challenge–Response Authentication</a></h3>
+<p><img src="pake/challenge-response-authentication.png" alt="challenge-response-authentication" /></p>
+<h3 id="hash-key-authentication"><a class="header" href="#hash-key-authentication">Hash-Key Authentication</a></h3>
+<p><img src="pake/hash-key-authentication.png" alt="hash-key-authentication" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="balanced-pake"><a class="header" href="#balanced-pake">Balanced PAKE</a></h1>
+<p><em>Balanced PAKE</em> satisfy all the <a href="pake/balanced/../security_requirements.html" title="Security Requirements">security requirements</a> and
+allow parties to negotiate with each other to get a same shared key
+for encryption by some magic mathematical computation based on
+their common knowledge of a same <strong>password</strong>.
+It prevents messages from being eavesdropped and tampered,
+so we can keep the secrecy and integrity of the transmitted data.</p>
+<p>We will next introduce two of most well-known protocol of <em>Balanced PAKE</em>,
+<em>EKE</em> and <em>SPEKE</em>.</p>
+<h2 id="eke-encrypted-key-exchange"><a class="header" href="#eke-encrypted-key-exchange">EKE: Encrypted Key Exchange</a></h2>
+<p><a href="https://www.cs.columbia.edu/%7Esmb/papers/neke.pdf" title="Encrypted Key Exchange: Password-based Protocols Secure Against Dictionary Attacks"><em>Encrypted Key Exchange</em></a>, often abbreviated to <em>EKE</em>,
+is invented by <em>Steven M. Bellovin</em> and <em>Michael Merritt</em> in 1992,
+when they worked in AT&amp;T Bell Laboratories.</p>
+<p>In general forms of <em>Encrypted Key Exchange</em>,
+at least one engaging parties will use the common password with a random number
+to generate a ephemeral (one-time) public key, and sends it to another party,
+who can use this received ephemeral public key to generate another public key
+to send to the next party or send it back to the first one.
+After one or more rounds of the exchange of the one-time public keys,
+the engaging parties can use them with the common password
+to generate a shared key for encryption.</p>
+<h2 id="speke-simple-password-exponential-key-exchange"><a class="header" href="#speke-simple-password-exponential-key-exchange">SPEKE: Simple Password Exponential Key Exchange</a></h2>
+<p><a href="http://www.jablon.org/jab96.pdf" title="Strong Password-Only Authenticated Key Exchange"><em>Simple Password Exponential Key Exchange</em></a>,
+often abbreviated to <em>SPEKE</em>
+is proposed by <em>David P. Jablon</em> in 1996.
+The protocol is almost same as <a href="pake/balanced/../../appendix/dh/dh.html" title="Diffie-Hellman Key Exchange"><em>Diffie-Hellman Key Exchange</em></a>,
+except the group generate is derived from the password.</p>
+<h2 id="references-3"><a class="header" href="#references-3">References</a></h2>
+<ul>
+<li><a href="http://cryptowiki.net/index.php?title=Encrypted_Key_Exchange" title="CryptoWiki: Encrypted Key Exchange">CryptoWiki: Encrypted Key Exchange</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Encrypted_key_exchange" title="Wiki: Encrypted key exchange">Wiki: Encrypted key exchange</a></li>
+<li><a href="http://www.themccallums.org/nathaniel/2014/10/27/authenticated-key-exchange-with-speke-or-dh-eke/" title="Authenticated Key Exchange with SPEKE or DH-EKE By Nathaniel McCallum">Authenticated Key Exchange with SPEKE or DH-EKE</a></li>
+<li><a href="https://www.cs.columbia.edu/%7Esmb/papers/neke.pdf" title="Encrypted Key Exchange: Password-based Protocols Secure Against Dictionary Attacks">Encrypted Key Exchange: Password-based Protocols Secure Against Dictionary Attacks</a></li>
+<li><a href="http://www.jablon.org/jab96.pdf" title="Strong Password-Only Authenticated Key Exchange">Strong Password-Only Authenticated Key Exchange</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="diffie-hellman-encrypted-key-exchange"><a class="header" href="#diffie-hellman-encrypted-key-exchange">Diffie-Hellman Encrypted Key Exchange</a></h1>
+<p><em>Diffie-Hellman Encrypted Key Exchange</em> is often abbreviated to <em>DH-EKE</em>.
+It's one of the <a href="https://www.cs.columbia.edu/%7Esmb/papers/neke.pdf" title="Encrypted Key Exchange: Password-based Protocols Secure Against Dictionary Attacks">original <em>EKE</em> protocols</a>
+based on <a href="pake/balanced/../../appendix/dh/dh.html" title="Diffie-Hellman Key Exchange"><em>Diffie-Hellman Key Exchange</em></a>.</p>
+<h2 id="how-it-work"><a class="header" href="#how-it-work">How It Work</a></h2>
+<p>Suppose we have two parties, Alice and Bob,
+want to build a secure communication via
+an established insecure channel.
+Eve is a attackers who is enable to eavesdrop all the messages on the channel.</p>
+<p>Assume that Alice and Bob possess the same password \( pwd \),
+which is not leaked out and only they both know it.
+Therefore, this password can be used as a key for authentication.
+If we use this key to encrypt the data,
+only the one who knows the key can decrypt it.
+Some attackers without key are unable to pretend themselves as Alice or Bob.
+Nevertheless, the password is usually a human-memorable weak password.
+It will be easily cracked by performing an exhaustive search
+if its bits is too short.
+To make sure the shared key \( s \) is long enough,
+we use the <strong>hash value</strong> of the password as the key instead.
+Thus, the shared secret key
+$$
+s = hash(pwd)
+$$</p>
+<h3 id="basic-concept"><a class="header" href="#basic-concept">Basic Concept</a></h3>
+<p><img src="pake/balanced/DH-EKE.png" alt="DH-EKE" /></p>
+<p>The basic idea is to use the shared secret key \( s \) to
+protect the public key swap of <a href="pake/balanced/../../appendix/dh/dh.html" title="Diffie-Hellman Key Exchange"><em>Diffie-Hellman Key Exchange</em></a>.
+Only the one who possess the key \( s \) can encrypt and decrypt the public keys.
+They still can derive a symmetric session key \( k \) on both sides
+for conversation.</p>
+<h3 id="with-challengeresponse-authentication"><a class="header" href="#with-challengeresponse-authentication">With Challenge–Response Authentication</a></h3>
+<p>In fact, the <em>DH-EKE</em> is integrated by <a href="pake/balanced/../../appendix/dh/dh.html" title="Diffie-Hellman Key Exchange"><em>Diffie-Hellman</em></a> and
+<a href="https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication" title="Challenge–response authentication">challenge–response authentication</a>.
+The <em>challenge</em> is presented by one party,
+and another party must reply a correct answer to be authenticated.</p>
+<p><img src="pake/balanced/DH-EKE-1.png" alt="DH-EKE-1" /></p>
+<p>The first step of <em>DH-EKE</em> is very similar to <a href="pake/balanced/../../appendix/dh/dh.html" title="Diffie-Hellman Key Exchange"><em>DH</em></a>.
+Alice picks a random number \( a \in [1, p-1] \) as her <strong>private key</strong>
+and use it to generate a <strong>public key</strong>:
+$$
+A \equiv g^a \pmod p
+$$</p>
+<p>Then she sends the encrypted value of the public key:
+$$
+A_{enc} = Enc_s(A)
+$$
+to Bob. After receiving \( A_{enc} \), Bob gets Alice's public key \( A\)
+by decrypting \( A_{enc} \):
+$$
+A = Dec_s(A_{enc})
+$$</p>
+<p>Then Bob picks a random number \( b \in [1, p-1] \) as his <strong>private key</strong>
+to compute a <strong>session key</strong>:
+$$
+k \equiv A^b \equiv g^{ab} \pmod p
+$$
+for encryption in this communication.</p>
+<p><img src="pake/balanced/DH-EKE-2.png" alt="DH-EKE-2" /></p>
+<p>Next, Bob generates his <strong>public key</strong> \( B \equiv g^b \pmod p \)
+and a random challenge \( challenge_{Bob} \).
+The \( challenge_{Bob} \) is then encrypted by the session key \( k \)
+into a value \( C_{Bob} \):
+$$
+C_{Bob} = Enc_k(challenge_{Bob})
+$$</p>
+<p>Then, Bob encrypts his public key \( B \) with \( C_{Bob} \)
+into \( B_{enc} \) by \( s \) and sends it to Alice.
+$$
+B_{enc} = Enc_s(B, C_{Bob})
+$$</p>
+<p>Alice decrypts the received \( B_{enc} \)
+to get Bob's public key \( B \) and \( C_{Bob} \).
+$$
+B, C_{Bob} = Dec_s(B_{enc})
+$$</p>
+<p>Then, Alice can compute a same <strong>session key</strong> \( k \) as Bob
+by her own private key,
+$$
+k \equiv B^a \equiv g^{ab} \pmod p
+$$</p>
+<p><img src="pake/balanced/DH-EKE-3.png" alt="DH-EKE-3" /></p>
+<p>After Alice has \( k \), she can use it to decrypt \( C_{Bob} \)
+to get \( challenge^{Alice}_{Bob} \).
+The \( challenge^{Alice}_{Bob} \) here represents that
+Alice's decoded value of Bob's challenge:</p>
+<p>$$
+challenge^{Alice}_{Bob} = Dec_k(C_{Bob})
+$$</p>
+<p>Next, Alice randomly generates her own challenge \( challenge_{Alice} \)
+and then use it to encrypt with Bob's challenge \( challenge_{Bob} \)
+into a value \( C_{mix} \) by the session key \( k \)</p>
+<p>$$
+C_{mix} = Enc_k(challenge_{Alice}, challenge^{Alice}_{Bob})
+$$</p>
+<p>Then, Alice sends \( C_{mix} \) to Bob.</p>
+<p><img src="pake/balanced/DH-EKE-4.png" alt="DH-EKE-4" /></p>
+<p>Later, Bob decrypts the \( C_{mix} \)
+to output \( challenge^{Bob}_{Alice} \) and \( challenge^{Alice}_{Bob} \).
+The \( challenge^{Bob}_{Alice} \) here represents that
+Bob's decoded value of Alice's challenge.
+$$
+challenge^{Bob}_{Alice}, challenge^{Alice}_{Bob} = Dec_k(C_{mix})
+$$</p>
+<p>In this step, Bob can authenticate Alice is valid or not
+by checking her decoded value of his own challenge, \( challenge^{Alice}_{Bob} \):</p>
+<p>$$
+valid(Alice) =
+\begin{cases}
+true,  &amp; \text{if } challenge^{Alice}_{Bob} = challenge_{Bob} \\
+false, &amp; \text{otherwise}
+\end{cases}
+$$</p>
+<p>If Alice is invalid, then Bob drops the session.
+Otherwise, Bob continue the protocols.</p>
+<p>Next, Bob needs to prove his identification to Alice.
+He encrypts \( challenge^{Bob}_{Alice} \) into \( C_{Alice} \):
+$$
+C_{Alice} = Enc_k(challenge^{Bob}_{Alice})
+$$
+and send it to Alice.</p>
+<p>After receiving \( C_{Alice} \), Alice decrypts it to get Bob's decode value
+of her own challenge:
+$$
+challenge^{Bob}_{Alice} = Dec_k(C_{Alice})
+$$</p>
+<p>Alice now is also able to authenticate Bob:</p>
+<p>$$
+valid(Bob) =
+\begin{cases}
+true,  &amp; \text{if } challenge^{Bob}_{Alice} = challenge_{Alice} \\
+false, &amp; \text{otherwise}
+\end{cases}
+$$</p>
+<p>Similarly, if Bob is invalid, then Alice drops the session.
+Otherwise, the protocol finishes.</p>
+<p>Finally, Alice and Bob authenticate mutually and they both
+have a same session key \( k \) that can be used for encryption or decryption.</p>
+<h3 id="summary"><a class="header" href="#summary">Summary</a></h3>
+<ol>
+<li>Alice generates a private-public key pair and sends the encrypted public key to Bob
+<ol>
+<li>Alice picks a random number \( a \in [1, p-1] \) as her private key</li>
+<li>Alice generates a public key \( A \equiv g^a \pmod p \)</li>
+<li>Alice encrypts her public key by shared secret key \( s \)</li>
+<li>Alice sends \( A_{enc} = Enc_s(A) \) to Bob.</li>
+</ol>
+</li>
+<li>Bob generates a private-public key pair and random challenge, computes the symmetric session key by his private key, and then sends the encrypted public key with the challenge to Alice
+<ol>
+<li>Bob decrypts \( A_{enc} \) to get Alice's public key \( A \) by shared secret key \( s \)</li>
+<li>Bob picks a random number \( b \in [1, p-1] \) as his private key</li>
+<li>Bob computes a session key \( k \equiv A^b \equiv g^{ab} \pmod p \)</li>
+<li>Bob generates a public key \( B \equiv g^b \pmod p \)</li>
+<li>Bob randomly generates a \( challenge_{Bob} \)</li>
+<li>Bob encrypts \( challenge_{Bob} \) to \( C_{Bob} \) by \( k \)</li>
+<li>Bob sends \( B_{enc} = Enc_s(B, C_{Bob}) \) to Alice.</li>
+</ol>
+</li>
+<li>Alice get Bob's public key and challenge, computes the symmetric session key by her private key, then generates her random challenge and send Bob's challenge back with her own one for authentication
+<ol>
+<li>Alice decrypts the received \( B_{enc} \) to get \( B, C_{Bob} \) by shared secret key \( s \)</li>
+<li>Alice computes a session key \( k \equiv B^a \equiv g^{ab} \pmod p \)</li>
+<li>Alice decrypts \( C_{Bob} \) to get Bob's challenge \( challenge_{Bob} \) by \( k \)</li>
+<li>Alice randomly generates a \( challenge_{Alice} \)</li>
+<li>Alice encrypts \( challenge_{Alice}, challenge_{Bob} \) to \( C_{mix} \) by \( k \)</li>
+<li>Alice sends \( C_{mix} = Enc_k(challenge_{Alice}, challenge_{Bob}) \) to Bob</li>
+</ol>
+</li>
+<li>Bob authenticates Alice by checking his own challenge with the received one
+<ol>
+<li>Bob decrypts the received \( C_{mix} \) to get \( challenge_{Alice}, challenge_{Bob} \) by \( k \)</li>
+<li>Bob checks whether or not the received \( challenge_{Bob} \) is same as his original one</li>
+<li>Alice is authenticated if the answer is yes. Otherwise, drops session.</li>
+<li>Bob encrypts the received \( challenge_{Alice} \) to \( C_{Alice} \) by \( k \)</li>
+<li>Bob sends \( C_{Alice} = Enc_k(challenge_{Alice}) \)</li>
+</ol>
+</li>
+<li>Alice authenticates Bob by checking his own challenge with the received one
+<ol>
+<li>Alice decrypts the received \( C_{Alice} \) to get \( challenge_{Alice} \) by \( k \)</li>
+<li>Alice checks whether or not received \( challenge_{Alice} \) is same as her original one</li>
+<li>Bob is authenticated if the answer is yes. Otherwise, drops session.</li>
+</ol>
+</li>
+</ol>
+<h2 id="security-issues"><a class="header" href="#security-issues">Security Issues</a></h2>
+<h3 id="short-exponents"><a class="header" href="#short-exponents">Short Exponents</a></h3>
+<p>The packets are transmitted byte-by-byte,
+so its size of bits must be 8's multiple(1 byte = 8-bits).
+Thus, if the modulo \( p \) is \( n \) bits, then the group must \( n \) bits.
+The private key, the public key are all \( n \) bits.</p>
+<p>Therefore, if \( n \neq 8 \cdot k \), where \( k \in N \),
+then <strong>some of bits are predictable</strong>. They must be \( 0 \).
+For example, if \( p = 263 = 107_{16} = 0000000100000111_{2} \),
+then we know the range of the group is \( [1, 262] \) and the data is 2-bytes.
+The first \( 7 \) bits in the first byte are all \( 0 \) because the elements in the group
+are smaller than \( 0000000100000111_{2} \).</p>
+<h2 id="references-4"><a class="header" href="#references-4">References</a></h2>
+<ul>
+<li><a href="https://www.cs.columbia.edu/%7Esmb/papers/neke.pdf" title="Encrypted Key Exchange: Password-based Protocols Secure Against Dictionary Attacks">Encrypted Key Exchange: Password-based Protocols Secure Against Dictionary Attacks</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="simple-password-exponential-key-exchange"><a class="header" href="#simple-password-exponential-key-exchange">Simple Password Exponential Key Exchange</a></h1>
+<p><em>Simple Password Exponential Key Exchange</em>(SPEKE) is based on
+<a href="pake/balanced/../../appendix/dh/dh.html" title="Diffie-Hellman Key Exchange"><em>Diffie-Hellman Key Exchange</em>(DH)</a>,
+which is a balanced <em>PAKE</em> protocol.
+The difference of <em>SPEKE</em> against <em>DH</em> is that
+its group generator is derived from the password
+rather than a public assumption.
+Only who knows the password can produce this private generator.</p>
+<h2 id="how-it-work-1"><a class="header" href="#how-it-work-1">How it work</a></h2>
+<p>The <em>SPEKE</em> has two stages:</p>
+<ol>
+<li>Session key establishment by <a href="pake/balanced/../../appendix/dh/dh.html" title="Diffie-Hellman Key Exchange"><em>DH</em></a></li>
+<li>Authentication</li>
+</ol>
+<p>Although there are some variations of <em>SPEKE</em>,
+their stage 1 is basically same.
+It uses the <a href="pake/balanced/../../appendix/dh/dh.html" title="Diffie-Hellman Key Exchange"><em>DH</em></a> protocol to build a session key.</p>
+<p>The stage 2 is to authenticate the conversation subject.
+We will introduce two ways to authenticate in this content.</p>
+<h3 id="stage-1-session-key-establishment"><a class="header" href="#stage-1-session-key-establishment">Stage 1: Session Key Establishment</a></h3>
+<p><img src="pake/balanced/SPEKE.png" alt="SPEKE" /></p>
+<p>The stage 1 of <em>SPEKE</em> is shown above.
+Instead of using a public group generator directly,
+<em>SPEKE</em> has a function \( f \) that can produce generators by inputs.
+Thus, we use the shared password \( pwd \) to create a generator
+$$
+g = f(pwd)
+$$
+and use it to complete the <em>DH</em> protocol.</p>
+<p>The modulo \( p \) used here is a <a href="https://en.wikipedia.org/wiki/Safe_prime" title="Wiki: Safe prime">safe prime</a>
+\begin{aligned}
+p = 2q + 1 \text{, where $q$ is also a prime}
+\end{aligned}</p>
+<p>After this stage finishes,
+the Alice and Bob can get a symmetric session key \( k \)
+to encrypt/decrypt the transmitted messages.</p>
+<h3 id="stage-2-with-challengeresponse-authentication"><a class="header" href="#stage-2-with-challengeresponse-authentication">Stage 2 with Challenge–Response Authentication</a></h3>
+<p><a href="https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication" title="Challenge–response authentication">Challenge–Response Authentication</a> is one way
+to verify whether or not the other party is Bob.
+The detail can be seen in the following terms.</p>
+<p><img src="pake/balanced/SPEKE-1.png" alt="SPEKE-1" />
+Alice generates a random challenge \( challenge_{Alice} \)
+and then encrypt it to \( C_{Alice} \) by the session key \( k \):
+$$
+C_{Alice} = Enc_k(challenge_{Alice})
+$$</p>
+<p>Bob then can decrypt \( C_{Alice} \) to \( challenge^{Bob}_{Alice} \)
+by the session key \( k \):
+$$
+challenge^{Bob}_{Alice} = Dec_k(C_{Alice})
+$$</p>
+<p><img src="pake/balanced/SPEKE-2.png" alt="SPEKE-2" />
+Then, Bob also generates a random challenge \( challenge_{Bob} \).
+It is encrypted with \( challenge^{Bob}_{Alice} \)
+into \( C_{mix} \) by \( k \) and then send back to Alice:
+$$
+C_{mix} = Enc_k(challenge^{Bob}_{Alice}, challenge_{Bob})
+$$</p>
+<p>After Alice receives \( C_{mix} \), she can decrypt it to get
+$$
+challenge^{Bob}_{Alice}, challenge^{Alice}_{Bob} = Dec_k(C_{mix})
+$$</p>
+<p>Alice now is able to verify whether or not Bob is valid by
+comparing the received Bob's decrypted value of her challenge
+and her original one.
+$$
+valid(Bob) =
+\begin{cases}
+true,  &amp; \text{if } challenge^{Bob}_{Alice} = challenge_{Alice} \\
+false, &amp; \text{otherwise}
+\end{cases}
+$$</p>
+<p>If Bob is invalid, then Alice immediately drops the session.
+Otherwise, the protocol should continue.</p>
+<p><img src="pake/balanced/SPEKE-3.png" alt="SPEKE-3" /></p>
+<p>Beside the \( challenge^{Bob}_{Alice} \),
+Alice also get a decrypted value of Bob's challenge \( challenge^{Alice}_{Bob} \).
+This is used as a proof that Alice has the same key \( k \) as Bob.
+Alice sends \( C_{Bob} \) to Bob for authentication:
+$$
+C_{Bob} = Enc_k(challenge^{Alice}_{Bob})
+$$</p>
+<p>When Bob receives the \( C_{Bob} \), he can decrypt it:
+$$
+challenge^{Alice}_{Bob} = Dec_k(C_{Bob})
+$$
+to compare Alice's decrypted value of his own challenge
+with his original one.</p>
+<p>$$
+valid(Alice) =
+\begin{cases}
+true,  &amp; \text{if } challenge^{Alice}_{Bob} = challenge_{Bob} \\
+false, &amp; \text{otherwise}
+\end{cases}
+$$
+If they are different, the Bob immediately drops the session.
+Otherwise, Alice is authenticated and the protocol finishes.</p>
+<h3 id="stage-2-with-hash-key-authentication"><a class="header" href="#stage-2-with-hash-key-authentication">Stage 2 with Hash-Key Authentication</a></h3>
+<p>Instead of random challenge,
+another simpler method to authenticate the other party
+is to use hash function.
+The steps consists of the following:</p>
+<p><img src="pake/balanced/SPEKE-A.png" alt="SPEKE-A" />
+First, Alice send twice hashed value of the session key to Bob:
+$$
+C_{Alice} = h(h(k))
+$$</p>
+<p>Then Bob can authenticate Alice by
+$$
+valid(Alice) =
+\begin{cases}
+true,  &amp; \text{if } C_{Alice} = h(h(k)) \\
+false, &amp; \text{otherwise}
+\end{cases}
+$$</p>
+<p>If Alice is a invalid party, then the session is dropped.
+Otherwise, the protocol continues.</p>
+<p><img src="pake/balanced/SPEKE-B.png" alt="SPEKE-B" /></p>
+<p>After verifying Alice, Bob also need to prove his identification to Alice.
+Bob sends
+$$
+C_{Bob} = h(k)
+$$
+to Alice. Alice then can certify Bob by
+$$
+valid(Bob) =
+\begin{cases}
+true,  &amp; \text{if }h(C_{Bob}) = C_{Alice} \\
+false, &amp; \text{otherwise}
+\end{cases}
+$$</p>
+<p>Finally, they can authenticate mutually.</p>
+<h3 id="summary-1"><a class="header" href="#summary-1">Summary</a></h3>
+<h2 id="security-issues-1"><a class="header" href="#security-issues-1">Security Issues</a></h2>
+<h3 id="short-exponents-1"><a class="header" href="#short-exponents-1">Short Exponents</a></h3>
+<p>Similar to the case of <a href="pake/balanced/dh-eke.html" title="DHEKE"><em>DH-EKE</em></a>, partial bits may be predictable.</p>
+<h3 id="test-multiple-passwords-in-one-time"><a class="header" href="#test-multiple-passwords-in-one-time">Test multiple passwords in one time</a></h3>
+<h4 id="fx--x2-mod-p"><a class="header" href="#fx--x2-mod-p">f(x) = x<sup>2</sup> mod p</a></h4>
+<p><img src="pake/balanced/SPEKE-simplified.png" alt="SPEKE-simplified" />
+The basic idea to get the generator is to define \( f(x) = x^2 \bmod p \),
+, where \( p \) is a safe prime such that \( p = 2q + 1 \), \( q \) is also a prime.
+Then, the generator \( g \) will be computed by \( pwd^2 \bmod p \).
+This makes sure that every \( f(x) \) will be a generator of
+a cyclic subgroup of \( G \), where \( G = { x \vert 0 &lt; x &lt; p \cap x \in N } \)
+(<strong>We need a proof here!</strong>)</p>
+<p>If we take \( q = 11 \) to get a safe prime \( p = 23 \), then the generators are:</p>
+<table><thead><tr><th>x</th><th>f(x)</th></tr></thead><tbody>
+<tr><td>1</td><td>1</td></tr>
+<tr><td>2</td><td>4</td></tr>
+<tr><td>3</td><td>9</td></tr>
+<tr><td>4</td><td>16</td></tr>
+<tr><td>5</td><td>2</td></tr>
+<tr><td>6</td><td>13</td></tr>
+<tr><td>7</td><td>3</td></tr>
+<tr><td>8</td><td>18</td></tr>
+<tr><td>9</td><td>12</td></tr>
+<tr><td>10</td><td>8</td></tr>
+<tr><td>11</td><td>6</td></tr>
+<tr><td>12</td><td>6</td></tr>
+<tr><td>13</td><td>8</td></tr>
+<tr><td>14</td><td>12</td></tr>
+<tr><td>15</td><td>18</td></tr>
+<tr><td>16</td><td>3</td></tr>
+<tr><td>17</td><td>13</td></tr>
+<tr><td>18</td><td>2</td></tr>
+<tr><td>19</td><td>16</td></tr>
+<tr><td>20</td><td>9</td></tr>
+<tr><td>21</td><td>4</td></tr>
+<tr><td>22</td><td>1</td></tr>
+<tr><td>23</td><td>0</td></tr>
+<tr><td>24</td><td>1</td></tr>
+<tr><td>25</td><td>4</td></tr>
+<tr><td>..</td><td>..</td></tr>
+</tbody></table>
+<p>From the table above, one obvious fact is that
+the attacker is allowed to test two \( pwd \) by guessing one \( g = f(pwd) \).
+For example, the attacker can guess the \( g = 16 = f(pwd) \).
+If he doesn't hit, then he knows that \( pwd \) is not 4 and 19.
+In the worst case that the \( pwd \) is fixed,
+the attacker can use half time to force brute the \( pwd \).</p>
+<p>The collision is <strong>guaranteed</strong> because
+\begin{aligned}
+(q + k + 1)^2 \equiv (q - k)^2 \pmod p \\
+\text{ ,where $k \in Z, p = 2q + 1$.}
+\end{aligned}</p>
+<p><strong>Proof</strong>:
+$$
+\begin{aligned}
+(q + k + 1)^2
+&amp;\equiv (q + (k + 1))^2 \\
+&amp; \equiv q^2 + 2q(k+1) + (k+1)^2 \pmod {2q + 1} \\
+&amp;\equiv q^2 + 2kq + 2q + k^2 + 2k + 1 \pmod {2q + 1} \\
+&amp;\equiv q^2 - 2kq + k^2 + 4kq + 2k + 2q + 1 \pmod {2q + 1} \\
+&amp;\equiv (q - k)^2 + 2k(2q + 1) + (2q + 1) \pmod {2q + 1} \\
+&amp;\equiv (q - k)^2 + (2k + 1)(2q + 1) \pmod {2q + 1} \\
+&amp;\equiv (q - k)^2 \pmod {2q + 1}
+\end{aligned}
+$$</p>
+<p>When \( k = 0 \), then \( (12)^2 \equiv (11)^2 \pmod {23} \).
+When \( k = 1 \), then \( (13)^2 \equiv (10)^2 \pmod {23} \).
+...</p>
+<h4 id="fx--hashx2-mod-p"><a class="header" href="#fx--hashx2-mod-p">f(x) = (hash(x))<sup>2</sup> mod p</a></h4>
+<p>Suppose we have a hash table</p>
+<table><thead><tr><th>x</th><th>hash(x)</th><th>f(x)</th></tr></thead><tbody>
+<tr><td>1</td><td>17</td><td>13</td></tr>
+<tr><td>2</td><td>9</td><td>12</td></tr>
+<tr><td>3</td><td>20</td><td>9</td></tr>
+<tr><td>4</td><td>1</td><td>1</td></tr>
+<tr><td>5</td><td>15</td><td>18</td></tr>
+<tr><td>6</td><td>10</td><td>8</td></tr>
+<tr><td>7</td><td>2</td><td>4</td></tr>
+<tr><td>8</td><td>5</td><td>2</td></tr>
+<tr><td>9</td><td>22</td><td>1</td></tr>
+<tr><td>10</td><td>23</td><td>0</td></tr>
+<tr><td>11</td><td>7</td><td>3</td></tr>
+<tr><td>12</td><td>19</td><td>16</td></tr>
+<tr><td>13</td><td>4</td><td>16</td></tr>
+<tr><td>14</td><td>6</td><td>13</td></tr>
+<tr><td>15</td><td>3</td><td>9</td></tr>
+<tr><td>16</td><td>11</td><td>6</td></tr>
+<tr><td>17</td><td>8</td><td>18</td></tr>
+<tr><td>18</td><td>14</td><td>12</td></tr>
+<tr><td>19</td><td>21</td><td>4</td></tr>
+<tr><td>20</td><td>12</td><td>6</td></tr>
+<tr><td>21</td><td>18</td><td>2</td></tr>
+<tr><td>22</td><td>13</td><td>8</td></tr>
+<tr><td>23</td><td>16</td><td>3</td></tr>
+</tbody></table>
+<p>Even we use the hash the map the \( pwd \) before squaring it, the fact that
+the attacker is allowed to test two \( pwd \) by guessing one \( g = f(pwd) \) won't be changed.
+For example, the attacker guesses \( g = 16 = f(pwd) \).
+If he doesn't hit, then he knows that \( pwd \) is not 12 and 13.</p>
+<h3 id="impersonation-attack"><a class="header" href="#impersonation-attack">Impersonation Attack</a></h3>
+<p>The author of J-PAKE points out a <a href="https://eprint.iacr.org/2014/585.pdf" title="The SPEKE Protocol Revisited">two attacks</a> against <em>SPEKE</em>.
+The first attack allows an attacker to successfully build two sessions with
+a same victim without knowing the password.
+<img src="pake/balanced/speke-impersonation-attack.png" alt="speke-impersonation-attack" /></p>
+<p>Although the attacker may not get the session key \( k \), it's still dangerous.
+Assume that Alice is a server of a bank.
+Suppose Alice sends a encrypted message &quot;Pay Jimmy one million&quot; to Bob on session 1.
+Eve can simply reply this message to Alice on session 2.
+Since Eve is a valid user who is authenticated as Bob,
+Alice may follow the received instruction and pay Jimmy one million.</p>
+<h3 id="key-malleability-attack"><a class="header" href="#key-malleability-attack">Key-malleability Attack</a></h3>
+<p>The author of J-PAKE points out a <a href="https://eprint.iacr.org/2014/585.pdf" title="The SPEKE Protocol Revisited">two attacks</a> against <em>SPEKE</em>.
+The second attack allows an attacker to have a hand in the session key
+between two parties without being detected.
+<img src="pake/balanced/key-malleability-attack.png" alt="key-malleability-attack" /></p>
+<h2 id="program-to-verify-the-generator"><a class="header" href="#program-to-verify-the-generator">Program to verify the generator</a></h2>
+<p>We can write a python program like <a href="pake/balanced/speke.py">speke.py</a>
+to verify the generator \( g = f(pwd) \) is a generator of a subgroup of \( G \).</p>
+<p>If \( p = 23, f(x) = x^2 \bmod p  \), then the output will be as follows:</p>
+<table><thead><tr><th>password</th><th>generator</th><th>subgroup</th><th>sorted subgroup</th></tr></thead><tbody>
+<tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>2</td><td>4</td><td>4, 16, 18, 3, 12, 2, 8, 9, 13, 6, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>3</td><td>9</td><td>9, 12, 16, 6, 8, 3, 4, 13, 2, 18, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>4</td><td>16</td><td>16, 3, 2, 9, 6, 4, 18, 12, 8, 13, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>5</td><td>2</td><td>2, 4, 8, 16, 9, 18, 13, 3, 6, 12, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>6</td><td>13</td><td>13, 8, 12, 18, 4, 6, 9, 2, 3, 16, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>7</td><td>3</td><td>3, 9, 4, 12, 13, 16, 2, 6, 18, 8, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>8</td><td>18</td><td>18, 2, 13, 4, 3, 8, 6, 16, 12, 9, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>9</td><td>12</td><td>12, 6, 3, 13, 18, 9, 16, 8, 4, 2, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>10</td><td>8</td><td>8, 18, 6, 2, 16, 13, 12, 4, 9, 3, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>11</td><td>6</td><td>6, 13, 9, 8, 2, 12, 3, 18, 16, 4, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>12</td><td>6</td><td>6, 13, 9, 8, 2, 12, 3, 18, 16, 4, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>13</td><td>8</td><td>8, 18, 6, 2, 16, 13, 12, 4, 9, 3, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>14</td><td>12</td><td>12, 6, 3, 13, 18, 9, 16, 8, 4, 2, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>15</td><td>18</td><td>18, 2, 13, 4, 3, 8, 6, 16, 12, 9, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>16</td><td>3</td><td>3, 9, 4, 12, 13, 16, 2, 6, 18, 8, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>17</td><td>13</td><td>13, 8, 12, 18, 4, 6, 9, 2, 3, 16, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>18</td><td>2</td><td>2, 4, 8, 16, 9, 18, 13, 3, 6, 12, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>19</td><td>16</td><td>16, 3, 2, 9, 6, 4, 18, 12, 8, 13, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>20</td><td>9</td><td>9, 12, 16, 6, 8, 3, 4, 13, 2, 18, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>21</td><td>4</td><td>4, 16, 18, 3, 12, 2, 8, 9, 13, 6, 1</td><td>1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18</td></tr>
+<tr><td>22</td><td>1</td><td>1</td><td>1</td></tr>
+</tbody></table>
+<h2 id="references-5"><a class="header" href="#references-5">References</a></h2>
+<ul>
+<li><a href="http://www.jablon.org/jab96.pdf" title="Strong Password-Only Authenticated Key Exchange">Strong Password-Only Authenticated Key Exchange</a></li>
+<li><a href="http://cryptowiki.net/index.php?title=Simple_password_exponential_key_exchange" title="Simple password exponential key exchange">Simple password exponential key exchange</a></li>
+<li><a href="https://en.wikipedia.org/wiki/SPEKE_(cryptography)" title="Wiki: SPEKE (cryptography)">Wiki: SPEKE (cryptography)</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="augmented-pake"><a class="header" href="#augmented-pake">Augmented PAKE</a></h1>
+<h2 id="references-6"><a class="header" href="#references-6">References</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="secure-remote-password-protocol"><a class="header" href="#secure-remote-password-protocol">Secure Remote Password protocol</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="j-pake-password-authenticated-key-exchange-by-juggling-without-pki"><a class="header" href="#j-pake-password-authenticated-key-exchange-by-juggling-without-pki">J-PAKE: Password Authenticated Key Exchange by Juggling Without PKI</a></h1>
+<p><strong>Password Authenticated Key Exchange by Juggling(J-PAKE)</strong>
+is a <em>password-authenticated key agreement(PAKE)</em> protocol
+without requiring <strong>Public Key Infrastructure(PKI)</strong> for authentication.
+<em>J-PAKE</em> is able to establish a private and authenticated channel
+on top of an insecure network solely based on a shared password.</p>
+<h2 id="why-we-need-j-pake"><a class="header" href="#why-we-need-j-pake">Why we need J-PAKE</a></h2>
+<ul>
+<li>EKE may leak partial information about password to a passive attacker</li>
+<li>SPEKE allows an active attacker to test multiple password
+in one protocol execution</li>
+<li>They are both patented</li>
+</ul>
+<h2 id="applications-1"><a class="header" href="#applications-1">Applications</a></h2>
+<ul>
+<li>Firefox Sync (<a href="https://blog.mozilla.org/services/2014/04/30/firefox-syncs-new-security-model/">removed after 2015</a>)</li>
+<li>OpenSSH and OpenSSL (<a href="http://cvsweb.openbsd.org/cgi-bin/cvsweb/src/usr.bin/ssh/Attic/jpake.c">removed after 2014</a>)</li>
+<li><a href="http://threadgroup.org/" title="Thread">Thread</a> (IoT wireless network protocol)</li>
+<li>Palemoon sync (forked from Firefox)</li>
+</ul>
+<h2 id="zero-knowledge-proof"><a class="header" href="#zero-knowledge-proof">Zero-Knowledge Proof</a></h2>
+<p><em>J-PAKE</em> use <a href="pake/balanced/jpake/../../../appendix/zkp/zkp.html" title="Zero-Knowledge Proof"><em>Zero-Knowledge Proof</em></a> to produce valid knowledge proof
+of a discrete logarithm without revealing it.
+One example is to use <a href="pake/balanced/jpake/../../../appendix/zkp/schnorr_signature.html" title="Schnorr signature">Schnorr digital signature</a>,
+which is a non-interactive protocol.</p>
+<h2 id="what-is-the-group-used-in-j-pake"><a class="header" href="#what-is-the-group-used-in-j-pake">What is the group used in J-PAKE?</a></h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Multiplicative_group_of_integers_modulo_n" title="Multiplicative group of integers modulo n">Multiplicative group of integers modulo n</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Elliptic_curve#The_group_law" title="Elliptic Curve Group Law">Elliptic Curve Group</a></li>
+</ul>
+<h2 id="references-7"><a class="header" href="#references-7">References</a></h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Password_Authenticated_Key_Exchange_by_Juggling" title="Password Authenticated Key Exchange by Juggling">Password Authenticated Key Exchange by Juggling</a></li>
+<li><a href="http://eprint.iacr.org/2010/190.pdf" title="J-PAKE: Authenticated Key Exchange Without PKI">J-PAKE: Authenticated Key Exchange Without PKI</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="j-pake-protocol"><a class="header" href="#j-pake-protocol">J-PAKE Protocol</a></h1>
+<p>As a <a href="pake/balanced/jpake/../../pake.html" title="Password Authenticated Key Exchange"><em>PAKE</em></a> family member,
+<em>J-PAKE</em> follows the <a href="pake/balanced/jpake/../../two_stages.html" title="General Two-Stage Framework">general two-stage framework</a>:</p>
+<ol>
+<li><strong>Key Establishment Protocol</strong>:
+Negotiate a one-time session key for the engaging parties.</li>
+<li><strong>Key Confirmation Protocol</strong>:
+Authenticate each other has the same session key.</li>
+</ol>
+<p>The key confirmation part is easy to understand.
+It's nothing different from the introduction of <a href="pake/balanced/jpake/../../two_stages.html" title="General Two-Stage Framework">two-stage framework</a>.
+In this chapter, we will focus on the first stage to realize
+the magic behind <em>J-PAKE</em>.</p>
+<p>Before introducing, let we define the symbols first:
+Let group \( G \) is a subgroup of \( Z^{\times}_p \) with prime order \( q \),
+in which the discrete log problem is intractable
+(Nevertheless, \( G \) also can be switched to Elliptic curve cryptography group).
+Let \( g \) is the generator of \( G \).
+Typically, <a href="https://en.wikipedia.org/wiki/Schnorr_group" title="Schnorr group">Schnorr group</a> is used in this protocol.</p>
+<p>The two communication parties, Alice and Bob,
+both agree on group \( (G, g) \).
+Let \( s \) is their low-entropy shared secret,
+which can be a password or hash of a password,
+and \( s \neq 0 \) is not empty.
+The value of \( s \) is assumed in \( [1, q-1] \).</p>
+<h2 id="key-establishment"><a class="header" href="#key-establishment">Key Establishment</a></h2>
+<p>The key establishment of <em>J-PAKE</em> executes in two rounds.</p>
+<h3 id="round-1"><a class="header" href="#round-1">Round 1</a></h3>
+<p><img src="pake/balanced/jpake/jpake-round1.png" alt="jpake-round1" /></p>
+<p>In round 1, Alice selects \( x_1 \in [0, q-1], x_2 \in [1, q-1] \)
+then sends out \( g^{x_1}, g^{x_2} \) with Zero-knowledge proof for \( x_1, x_2 \).
+Similarly, Bob selects \( x_3 \in [0, q-1], x_4 \in [1, q-1] \) and
+sends out \( g^{x_3}, g^{x_4} \) with Zero-knowledge proof for \( x_3, x_4 \).
+The above communication can be completed in one round
+as neither party depends on the other.
+When it finishes, Alice and Bob verify the received Zero-knowledge proof
+and also check \( g^{x_2}, g^{x_4} \neq 1 \).</p>
+<h3 id="round-2"><a class="header" href="#round-2">Round 2</a></h3>
+<p><img src="pake/balanced/jpake/jpake-round2.png" alt="jpake-round2" /></p>
+<p>Alice sends out \( A = g^{(x_1 + x_3 + x_4) \cdot x_2 \cdot s} = (g^{x_1} \cdot g^{x_3} \cdot g^{x_4})^{x_2 \cdot s} \)
+and a Zero-knowledge proof for \( x_2 \cdot s \).
+Similarly, Bob sends out \( B = g^{(x_1 + x_2 + x_3) \cdot x_4 \cdot s} = (g^{x_1} \cdot g^{x_2} \cdot g^{x_3})^{x_4 \cdot s} \)
+and a Zero-knowledge proof for \( x_4 \cdot s \).</p>
+<p>After round 2, Alice computes \( K = (B / g^{x_2 \cdot x_4 \cdot s})^{x_2} = g^{(x_1 + x_3) \cdot x_2 \cdot x_4 \cdot s} \),
+and Bob computes \( K = (A / g^{x_2 \cdot x_4 \cdot s})^{x_4} = g^{(x_1 + x_3) \cdot x_2 \cdot x_4 \cdot s} \).</p>
+<p>With the same keying material \( K \),
+a session key can be derived for Alice and Bob: \( k = H(K) \),
+where \( H \) is a <a href="https://en.wikipedia.org/wiki/Cryptographic_hash_function" title="Cryptographic hash function">Cryptographic hash function</a>.</p>
+<p>The division \( / \) here means multiplication with the <strong>inverse element</strong>.
+For example, \( a / b = a \cdot b^{-1} = b^{q - 1} \), where \( a, b \in G \).
+\( b^{-1} \) is an element such that \( b \cdot b^{-1} = 1 \),
+known as the inverse element of \( b \).
+From the fact that \( b^q = 1 \), where \( q \) is the order of \( G \),
+\( b^{q-i} \) can be used as an inverse element of \( b^i \)
+because \( b^i \cdot b^{q-i} = b^q = 1 \), where \( i \in N \).</p>
+<p>Therefore, the \( K \) can be computed by</p>
+<p>$$
+\begin{aligned}
+K &amp;= (\frac{B}{g^{x_2 \cdot x_4 \cdot s}})^{x_2} \\
+&amp;= (B \cdot g^{-(x_2 \cdot x_4 \cdot s}))^{x_2} \\
+&amp;= (B \cdot (g^{x_2 \cdot x_4})^{-s})^{x_2} \\
+&amp;= (B \cdot (g^{x_2 \cdot x_4})^{q-s})^{x_2} \\
+\\
+L &amp;= g^{x_2 \cdot x_4} = (g^{x_4})^{x_2} \\
+I &amp;= L^{-s} = L^{q-s} \\
+J_{Alice} &amp;= B \cdot I \\
+K &amp;= (J_{Alice})^{x_2}
+\end{aligned}
+$$</p>
+<p>$$
+\text{ , where } q \text{ is the order of } G
+$$</p>
+<p>or</p>
+<p>$$
+\begin{aligned}
+K &amp;= (\frac{A}{g^{x_2 \cdot x_4 \cdot s}})^{x_4} \\
+&amp;= (A \cdot g^{-(x_2 \cdot x_4 \cdot s)})^{x_4} \\
+&amp;= (A \cdot (g^{x_2 \cdot x_4})^{-s})^{x_4} \\
+&amp;= (A \cdot (g^{x_2 \cdot x_4})^{q-s})^{x_4} \\
+\\
+L &amp;= g^{x_2 \cdot x_4} = (g^{x_2})^{x_4} \\
+I &amp;= L^{-s} = L^{q-s} \\
+J_{Bob} &amp;= A \cdot I \\
+K &amp;= (J_{Bob})^{x_4}
+\end{aligned}
+$$</p>
+<p>$$
+\text{ , where } q \text{ is the order of } G
+$$</p>
+<h2 id="key-confirmation"><a class="header" href="#key-confirmation">Key Confirmation</a></h2>
+<p>There are several ways to achieve explicit key confirmation.
+One simple method is to use <a href="pake/balanced/jpake/../../two_stages.html" title="General Two-Stage Framework">hash-key</a>
+like <a href="pake/balanced/jpake/../speke.html" title="SPEKE"><em>SPEKE</em></a> to do it:
+Alice sends Bob \( H(H(k)) \), and then Bob replies with \( H(k) \).</p>
+<p>Another method is use the session key \( k \) to
+encrypt and decrypt a random value(<a href="pake/balanced/jpake/../../two_stages.html" title="General Two-Stage Framework">random challenge</a>)
+like <a href="pake/balanced/jpake/../dh-eke.html" title="DH-EKE"><em>EKE</em></a>.</p>
+<h2 id="zero-knowledge-proof-1"><a class="header" href="#zero-knowledge-proof-1">Zero-Knowledge Proof</a></h2>
+<p><img src="pake/balanced/jpake/../appendix/zkp/schnorr-signature-exponent-proof.png" alt="schnorr-signature-exponent-proof" />
+In the protocol, we need to produce a valid knowledge proof for the exponent.
+As an example, we can use <a href="pake/balanced/jpake/../../../appendix/zkp/schnorr_signature.html" title="Schnorr Signature">Schnorr signature</a> mentioned in appendix to do it.
+To prove the knowledge of the exponent for \( X = g^x \),
+one sends out \( X \) with Zero-Knowledge proof: \( {ID, V = g^v, r = v - x \cdot h} \),
+where $ID$ is the unique user identifier,
+\( v \in Z_q \) and \( h = H(g, V, X, ID) \), \( H \) is a secure hash function.
+The receiver then can compute their own \( h' = H(g, V, X, ID) \)
+and verifies \( V = g^r \cdot X^{h'} \).
+The \( ID \) added here is to prevent Alice replaying Bob's signature back to Bob
+and vise versa.</p>
+<h3 id="why-does-j-pake-need-zero-knowledge-proof"><a class="header" href="#why-does-j-pake-need-zero-knowledge-proof">Why does J-PAKE need Zero-Knowledge Proof</a></h3>
+<p><img src="pake/balanced/jpake/jpake-impersonation-attack-without-zkp.png" alt="jpake-impersonation-attack-without-zkp" />
+If we don't use <em>ZKP</em> here,
+<em>J-PAKE</em> will suffer impersonation-attack like <a href="pake/balanced/jpake/../speke.html" title="SPEKE"><em>SPEKE</em></a></p>
+<h3 id="can-we-use-hash-instead-of-zkp"><a class="header" href="#can-we-use-hash-instead-of-zkp">Can we use hash instead of ZKP</a></h3>
+<p>No. To use hash to verify, the two party must have the same secret.
+If only one party has the secret, then the other has no way to verify it.
+It doesn't has the value to hash, so it has no results to compare.</p>
+<h2 id="why-x2-x4-and-s-can-not-be-0"><a class="header" href="#why-x2-x4-and-s-can-not-be-0">Why x2, x4 and s can NOT be 0?</a></h2>
+<p>$$
+K = g^{(x_1 + x_3) \cdot x_2 \cdot x_4 \cdot s}
+$$</p>
+<p>The attackers can intentionally choose \( x_2 = 0 \) or \( x_4 = 0 \)
+to force the \( K = 1 \), even he doesn't know the password.
+Therefore, the range of \( x_2, x_4 \) are specified in 1 to \( q-1 \).
+This is also the same reason for \( s \neq 0 \).</p>
+<h3 id="why-dont-we-just-select-x1-x2-x3-x4-between-1-to-q-1"><a class="header" href="#why-dont-we-just-select-x1-x2-x3-x4-between-1-to-q-1">Why don't we just select x1, x2, x3, x4 between 1 to q-1?</a></h3>
+<p>The \( K \) still can be 1 if \( x_1 + x_3 = 0 \).
+However, the probability is extremely low.
+You can still select \( x_1, x_2, x_3, x_4 \in [1, q-1] \). It's valid.
+But you will lose the combinations of
+\( x_1 = 0 \) paired to \( x_2, x_3, x_4 \neq 0 \)
+and \( x_2 = 0 \) paired to \( x_1, x_3, x_4 \neq 0 \).</p>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
+<p>Let take the group in appendix for <a href="pake/balanced/jpake/../../../appendix/group_theory.html" title="Group Theory">Group Theory</a> as an example.
+\( G = { 1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18 } \) is a <a href="https://en.wikipedia.org/wiki/Schnorr_group" title="Schnorr group">Schnorr group</a>
+with prime order \( q = 11 \) and generator \( g = 9 \),
+which is the subgroup of \( Z^{\times}<em>{23} = { x \vert 0 &lt; x &lt; 23 \cap x \in N } \).
+\( Z^{\times}</em>{23} \) is a multiplicative group of integers modulo \( p \), \( p = 23 \).
+And let shared secret \( s = 7(1 \leq s \leq q-1) \).</p>
+<p>Suppose Alice first chooses \( x_1 = 9(0 \leq x_1 \leq q-1), x_2 = 3(1 \leq x_2 \leq q-1) \)
+and Bob chooses \( x_3 = 5(0 \leq x_3 \leq q-1), x_4 = 6(1 \leq x_4 \leq q-1) \),
+the final results are as follows:</p>
+<table><thead><tr><th>Rnd</th><th>Dir</th><th>Alice</th><th>Public</th><th>Bob</th></tr></thead><tbody>
+<tr><td></td><td></td><td>g = 9, q = 11, p = 23, s = 7</td><td>g = 9, q = 11, p = 23</td><td>g = 9, q = 11, p = 23, s = 7</td></tr>
+<tr><td></td><td></td><td>x1 = 9, x2 = 3</td><td></td><td>x3 = 5, x4 = 6</td></tr>
+<tr><td>1</td><td>→</td><td>gx1 = 2, gx2 = 16</td><td>gx1 = 2, gx2 = 16</td><td>gx1 = 2, gx2 = 16</td></tr>
+<tr><td>1</td><td>←</td><td>gx3 = 8, gx4 = 3</td><td>gx3 = 8, gx4 = 3</td><td>gx3 = 8, gx4 = 3</td></tr>
+<tr><td>2</td><td>→</td><td>A = 12</td><td>A = 12</td><td>A = 12</td></tr>
+<tr><td>2</td><td>←</td><td>B = 18</td><td>B = 18</td><td>B = 18</td></tr>
+<tr><td></td><td></td><td>K = 11</td><td></td><td>K = 11</td></tr>
+</tbody></table>
+<p>\( g^{x_1}, g^{x_2}, g^{x_3}, g^{x_4} \) can be directly get from
+<a href="pake/balanced/jpake/../../../appendix/group_theory.html" title="Group Theory">example Schnorr group in appendix</a>.
+Next, we will use \( g^{x_1}, g^{x_2}, g^{x_3}, g^{x_4} \)
+to compute \( A, B, K \).
+You can try all the following computation process
+on <a href="https://defuse.ca/big-number-calculator.htm" title="Online Big Number Calculator">Online Big Number Calculator</a> to verify the results.</p>
+<p>$$
+\begin{aligned}
+A &amp;\equiv (g^{x_1} \cdot g^{x_3} \cdot g^{x_4})^{x_2 \cdot s} \pmod p\\
+&amp;\equiv (2 \cdot 8 \cdot 3)^{3 \cdot 7} \pmod {23}\\
+&amp;\equiv  (48)^{3 \cdot 7} \pmod {23}\\
+&amp;\equiv  2^{3 \cdot 7} \pmod {23}\\
+&amp;\equiv  (2^3)^7 \pmod {23}\\
+&amp;\equiv  8^7 \pmod {23}\\
+&amp;\equiv  12
+\end{aligned}
+$$</p>
+<p>$$
+\begin{aligned}
+B &amp;\equiv (g^{x_1} \cdot g^{x_2} \cdot g^{x_3})^{x_4 \cdot s} \pmod p\\
+&amp;\equiv (2 \cdot 16 \cdot 8)^{6 \cdot 7} \pmod {23}\\
+&amp;\equiv (256)^{6 \cdot 7} \pmod {23}\\
+&amp;\equiv 3^{6 \cdot 7} \pmod {23}\\
+&amp;\equiv (3^6)^7 \pmod {23}\\
+&amp;\equiv 16^7 \pmod {23}\\
+&amp;\equiv 18
+\end{aligned}
+$$</p>
+<p>To compute \( K \) for Alice, we first start with \( (g^{x_4})^{x_2} \)
+to get \( g^{x_2 \cdot x_4} \).
+Next, we can use \( (g^{x_2 \cdot x_4})^{-s} = (g^{x_2 \cdot x_4})^{q-s} \)
+to get \( g^{-(x_2 \cdot x_4 \cdot s)} \).
+Then, \( J_{Alice} = \frac{B}{g^{x_2 \cdot x_4 \cdot s}} \) can be calculated
+by \( J_{Alice} = B \cdot g^{-(x_2 \cdot x_4 \cdot s)} = B \cdot (g^{x_2 \cdot x_4})^{-s} \)
+Finally, \( K = (J_{Alice})^{x_2} \).</p>
+<p>$$
+\begin{aligned}
+L &amp;\equiv (g^{x_4})^{x_2} \pmod p\\
+&amp;\equiv 3^{3} \pmod {23}\\
+&amp;\equiv 4 \\
+\\
+I &amp;\equiv L^{-s} \equiv L^{q-s} \pmod p\\
+&amp;\equiv 4^{11-7} \equiv 4^4 \pmod {23}\\
+&amp;\equiv 3 \\
+\\
+J_{Alice} &amp;\equiv B \cdot I \pmod p\\
+&amp;\equiv 18 \cdot 3 \pmod {23}\\
+&amp;\equiv 8 \
+\\
+K &amp;\equiv (J_{Alice})^{x_2} \pmod p\\
+&amp;\equiv 8^{3} \pmod {23}\\
+&amp;\equiv 6
+\end{aligned}
+$$</p>
+<p>In the same way, Bob can start with \( (g^{x_2})^{x_4} \)
+to get \( g^{x_2 \cdot x_4} \).
+Then apply \( (g^{x_2 \cdot x_4})^{-s} = (g^{x_2 \cdot x_4})^{q-s} \)
+to \( K = (\frac{A}{g^{x_2 \cdot x_4 \cdot s}})^{x_4} = (A \cdot (g^{x_2 \cdot x_4})^{-s}))^{x_4} \).</p>
+<p>$$
+\begin{aligned}
+L &amp;\equiv (g^{x_2})^{x_4} \pmod p\\
+&amp;\equiv 16^{6} \pmod {23}\\
+&amp;\equiv 4 \\
+\\
+I &amp;\equiv L^{-s} \equiv L^{q-s} \pmod p\\
+&amp;\equiv 4^{11-7} \equiv 4^4 \pmod {23}\\
+&amp;\equiv 3 \\
+\\
+J_{Bob} &amp;\equiv A \cdot I \pmod p\\
+&amp;\equiv 12 \cdot 3 \pmod {23}\\
+&amp;\equiv 13 \\
+\\
+K &amp;\equiv (J_{Alice})^{x_4} \pmod p\\
+&amp;\equiv 13^{6} \pmod {23}\\
+&amp;\equiv 6
+\end{aligned}
+$$</p>
+<h2 id="references-8"><a class="header" href="#references-8">References</a></h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Password_Authenticated_Key_Exchange_by_Juggling" title="Password Authenticated Key Exchange by Juggling">Password Authenticated Key Exchange by Juggling</a></li>
+<li><a href="http://eprint.iacr.org/2010/190.pdf" title="J-PAKE: Authenticated Key Exchange Without PKI">J-PAKE: Authenticated Key Exchange Without PKI</a></li>
+<li><a href="https://defuse.ca/big-number-calculator.htm" title="Online Big Number Calculator">Online Big Number Calculator</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="security"><a class="header" href="#security">Security</a></h1>
+<p>Recall the security requirements for <em>PAKE</em> protocols:</p>
+<ul>
+<li><strong>Off-line dictionary attack resistance</strong>:
+No leaked information for attackers,
+which allows them to perform offline-exhaustive search to find the password.</li>
+<li><strong>On-line dictionary attack resistance</strong>:
+An active attacker is allowed to test only one password per protocol.</li>
+<li><strong>Forward secrecy</strong>:
+The session keys are still secure even when the password is later leaked.</li>
+<li><strong>Known-session security</strong>:
+A disclosed session key doesn't affect
+the security of other established session.</li>
+</ul>
+<h2 id="off-line-dictionary-attack-resistance-1"><a class="header" href="#off-line-dictionary-attack-resistance-1">Off-line dictionary attack resistance</a></h2>
+<h3 id="active-attacker"><a class="header" href="#active-attacker">Active attacker</a></h3>
+<p>Suppose Bob is an attacker who directly talk to Alice
+but he doesn't possess the shared secret \( s \).
+The data available for Bob include \( g^{x_1}, g^{x_2}, A \)
+and Zero Knowledge Proofs (ZKP) for the respective exponents.</p>
+<p>By protocol definition, \( x_1 \in [0, q-1], x_2 \in [1, q-1], s \in [1, q-1] \)
+, they are unknown for Bob when \( q \) is a very large number.
+If \( q \) is 160-bits, the probability to hit \( x_1 \) and \( x_2, s \) are
+respectively \( \frac{1}{2^{160}} \) and \( \frac{1}{2^{160} - 1} \) for Bob.
+Bob is impossible to guess right.</p>
+<h3 id="passive-attacker"><a class="header" href="#passive-attacker">Passive attacker</a></h3>
+<p>The data available for an passive attacker include
+\( g^{x_1}, g^{x_2}, g^{x_3}, g^{x_4}, A, B \)
+and their Zero Knowledge Proofs(ZKP).
+Same as above, the probability to his all \( x_1, x_2, x_3, x_4, s \)
+is extremely low.</p>
+<h2 id="on-line-dictionary-attack-resistance-1"><a class="header" href="#on-line-dictionary-attack-resistance-1">On-line dictionary attack resistance</a></h2>
+<p>Suppose Bob is an attacker who directly talk to Alice
+but he doesn't possess the shared secret \( s \).
+Bob can freely choose \( x_3, x_4 \) and the password \( w \).
+Then, the \( B = g^{(x_1 + x_2 + x_3) \cdot x_4 \cdot w} \)
+After receiving \( B \), Alice computes
+$$
+\begin{aligned}
+K &amp;= (\frac{B}{g^{x_2 \cdot x_4 \cdot s}})^{x_2} \\
+&amp;= g^{x_1 \cdot x_2 \cdot x_4 \cdot w}
+\cdot g^{x_2 \cdot x_3 \cdot x_4 \cdot w}
+\cdot g^{x_2 \cdot x_2 \cdot x_4 \cdot (w - s)}
+\end{aligned}
+$$</p>
+<p>Therefore, without \( x_1, x_2, s \), Bob is unable to compute \( K \).</p>
+<h2 id="forward-secrecy-1"><a class="header" href="#forward-secrecy-1">Forward secrecy</a></h2>
+<p>In this case, we consider the password is already leaked to the attacker.
+However, the past session key still can not be computed
+because the attacker at least need to get \( x_1, x_2 \)
+(if the attacker is active, then \( x_3, x_4 \) is hold by himself).
+Thus, the probability to compute a right session key is overwhelming low.</p>
+<h2 id="known-session-security-1"><a class="header" href="#known-session-security-1">Known-session security</a></h2>
+<p>Assume that the attacker is powerful enough to compromise a session,
+and learn all data of the compromised session like raw key \( K \) and
+all private key \( x_1, x_2, x_3, x_4 \).</p>
+<p>Each session key is derived from one set of random number
+\( x_1, x_2, x_3, x_4 \), so it's different in each session.
+Due to the session key is ephemeral,
+the attacker have no chance to compute the session key of other sessions
+even he have already compromised one.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="comparison"><a class="header" href="#comparison">Comparison</a></h1>
+<p>J-PAKE scheme looks too computationally expensive,
+but actually it's not.</p>
+<table><thead><tr><th>Item</th><th>Description</th><th>No of Exp</th></tr></thead><tbody>
+<tr><td>1</td><td>Compute g<sup>x1</sup>, g<sup>x2</sup> and ZKPs for { x<sub>1</sub>, x<sub>2</sub> }</td><td>4</td></tr>
+<tr><td>2</td><td>Verify ZKPs for { x<sub>3</sub>, x<sub>4</sub> }</td><td>4</td></tr>
+<tr><td>3</td><td>Compute A and ZKP for { x<sub>2</sub> • s }</td><td>2</td></tr>
+<tr><td>4</td><td>Verify ZKP for { x<sub>4</sub> • s }</td><td>2</td></tr>
+<tr><td>5</td><td>Compute K</td><td>2</td></tr>
+<tr><td></td><td>Total</td><td>14</td></tr>
+</tbody></table>
+<p>Recall that <a href="pake/balanced/jpake/../dh-eke.html" title="Diffie-Hellman Encrypted Key Exchange"><em>EKE</em></a> and <a href="pake/balanced/jpake/../speke.html" title="Simple Password Exponential Key Exchange"><em>SPEKE</em></a> use only 2 exponentiations
+compared with 14 exponentiations in <a href="pake/balanced/jpake/intro.html" title="J-PAKE: Password Authenticated Key Exchange by Juggling Without PKI"><em>J-PAKE</em></a>,
+we might think <em>J-PAKE</em> is computationally expensive.
+However, both <em>EKE</em> and <em>SPEKE</em> must use <strong>long exponents</strong>.
+One typical exponentiation in <em>EKE</em> or <em>SPEKE</em> is equivalent
+in cost 6-7 exponentiation in <em>J-PAKE</em>.
+Hence, overall computational costs for <em>EKE</em>, <em>SPEKE</em>, and <em>J-PAKE</em>
+are actually about the same.</p>
+<h2 id="why-can-j-pake-use-short-exponents"><a class="header" href="#why-can-j-pake-use-short-exponents">Why can J-PAKE use short exponents?</a></h2>
+<p>You must be curious about why <em>J-PAKE</em> can use short exponents.
+The basic pattern of the <a href="pake/balanced/jpake/../../pake.html" title="PAKE: Password Authenticated Key Exchange"><em>PAKE family</em></a> are exactly <strong>same</strong>.
+They all choose a secret number \( x \) as a <em>private key</em> and
+generate a <em>public key</em> \( g^x \) with the <em>group generator</em> \( g \).</p>
+<p>From the aspect of probability, the reason of
+why <em>J-PAKE</em> can achieve same security as <em>EKE</em> and <em>SPEKE</em> is that
+it decomposes the probability of cracking one <em>private key</em> into
+several probabilities of cracking several <em>private keys</em>.</p>
+<p>Suppose the <em>EKE</em> or <em>SPEKE</em> use a 4-bits group modulo \( p \),
+then its used <em>private key</em> must also be 4-bits.
+Therefore, there are \( 2^4 = 16 \) possible choices for the <em>private key</em>.
+To crack one <em>PAKE</em> session channel,
+the attacker needs to hit not only Alice's <em>private key</em>, but also Bob's one.
+Thus, the probability of hitting the private keys of both sides is
+\( \frac{1}{16} \cdot \frac{1}{16} = \frac{1}{256} \).
+However, <em>J-PAKE</em> can reach the same probability by
+using only 2-bits group modulo \( p \).
+<em>J-PAKE</em> uses <strong>2 exponents</strong> per session on each side.
+Consequently, it will produce 2 <em>private keys</em> on each side
+in one protocol execution.
+That is, Alice and Bob will have \( 2^2 = 4 \) choices
+for one 2-bits <em>private key</em>.
+To establish one <em>J-PAKE</em> session,
+both Alice and Bob will have \( 4 \cdot 4 = 16 \)
+possible combinations for two random <em>private keys</em>.
+Thus, there are \( 16 \cdot 16 = 256 \) possible combinations for
+Alice and Bob's <em>private keys</em>.
+Then the probability to compromise a <em>J-PAKE</em> session is \( \frac{1}{256} \).
+And that's why <em>J-PAKE</em> can achieve the same security as <em>EKE</em> and <em>SPEKE</em>.</p>
+<p>Formally, assume that \( u, v \) are the probabilities
+to crack one <em>private key</em> of respectively <em>EKE</em>/<em>SPEKE</em> and <em>J-PAKE</em>.
+Then to find a \( v \) such that \( u^2 = v^4 \) can guarantee that
+<em>J-PAKE</em> has same security level as <em>EKE</em> and <em>SPEKE</em>.
+That is, if we use \( i \) bits <em>private key</em> for <em>EKE</em> or <em>SPEKE</em>,
+To achieve same security level,
+we must use \( j \) bits <em>private key</em> for <em>J-PAKE</em> such that</p>
+<p>$$
+\begin{aligned}
+u &amp;= \frac{1}{2^i} \\
+v &amp;= \frac{1}{2^j} \\
+u^2 &amp;= v^4 \\
+\Rightarrow (\frac{1}{2^i})^2 &amp;= (\frac{1}{2^j})^4 \\
+\Rightarrow \frac{1}{2^{2i}} &amp;= \frac{1}{2^{4j}} \\
+\Rightarrow 2^{2i} &amp;= 2^{4j} \\
+\Rightarrow j &amp;= \frac{i}{2}
+\end{aligned}
+$$</p>
+<p>Thus, <em>J-PAKE</em> can only use half bits of <em>EKE</em> or <em>SPEKE</em>
+to keep the channel secret.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="j-pake-over-tls-1"><a class="header" href="#j-pake-over-tls-1">J-PAKE over TLS</a></h1>
+<p>In the case that there is no trusted third party like <em>PKI</em> in the network,
+the certificate of server/client can not be authenticated.
+That is, the communication parties can not verified each others,
+while they can still establish a confidential channel without authentication.</p>
+<p>However, if there is a shared password between the communication parties,
+then we can use <em>PAKE</em> to authenticate each side.
+One approach is <a href="https://s3.amazonaws.com/files.douglas.stebila.ca/files/research/papers/SSR-ManSteDen14.pdf" title="Secure modular password authentication for the web using channel bindings">Secure modular password authentication for the web using channel bindings</a>
+published on <a href="http://www.ssr2014.com/index.html" title="SSR 2014">SSR 2014</a>(We will use <em>SSR2014</em> as this work later).</p>
+<p>Here, we want to introduced a variant if <em>SSR2014</em>, named <strong>J-PAKE over TLS</strong>.
+The basic concept is same as <em>SSR2014</em>, but we add a little change.</p>
+<h2 id="basic-idea"><a class="header" href="#basic-idea">Basic idea</a></h2>
+<p><img src="pake/balanced/jpake/jpake-over-tls-danger.png" alt="jpake-over-tls-danger" />
+Establish the confidential TLS channel without authentication first,
+and then authenticate both side by <em>J-PAKE</em>.</p>
+<h2 id="man-in-the-middle"><a class="header" href="#man-in-the-middle">Man-in-the-middle</a></h2>
+<p><img src="pake/balanced/jpake/jpake-over-tls-mitm.png" alt="jpake-over-tls-mitm" />
+However, it can not prevent the man-in-the-middle(MITM) attack.</p>
+<h2 id="mixing-tls-fingerprint-in-the-shared-secret"><a class="header" href="#mixing-tls-fingerprint-in-the-shared-secret">Mixing TLS fingerprint in the shared secret</a></h2>
+<p>To avoid MITM, we can mix the TLS's fingerprint in
+<img src="pake/balanced/jpake/jpake-over-tls.png" alt="jpake-over-tls" /></p>
+<h2 id="references-9"><a class="header" href="#references-9">References</a></h2>
+<ul>
+<li><a href="https://s3.amazonaws.com/files.douglas.stebila.ca/files/research/papers/SSR-ManSteDen14.pdf" title="Secure modular password authentication for the web using channel bindings">Secure modular password authentication for the web using channel bindings</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="discussion"><a class="header" href="#discussion">Discussion</a></h1>
+<h2 id="why-we-need-to-use-tls-here-why-dont-we-just-use-j-pake-with-aes-or-des-over-tcp"><a class="header" href="#why-we-need-to-use-tls-here-why-dont-we-just-use-j-pake-with-aes-or-des-over-tcp">Why we need to use TLS here? Why don't we just use J-PAKE with AES or DES over TCP?</a></h2>
+<p>Imagine that we are no TLS here.
+You need to establish a network protocol to transfer data.
+you might use TCP or UDP.
+After building channel, you need to perform J-PAKE protocol
+and then encrypt/decrypt messages with the symmetric key
+computed from J-PAKE.
+Before encrypting, you need check the two parties have
+at least one same cryptographic encryption module like AES or DES by your own.
+In summary, you need to build TCP or UDP channel,
+and then negotiate a encryption module for further usage.</p>
+<p>This sounds like the <strong>handshake</strong> step of TLS.</p>
+<p>Why don't you use the built-in TLS if you already have one?</p>
+<p>That is, TLS = (AES/DES/..) + TCP,
+so, J-PAKE + (AES/DES/..) + TCP = J-PAKE + TLS</p>
+<p>Thus, we can use the built-in TLS to establish a TCP channel
+and reach an agreement on encryption module(AES/DES/...)
+to transfer the encrypted messages or decrypt the received messages.
+You can save the effort to do the same job as TLS handshake by your own.
+TLS is well-deployed protocal. Just call it!</p>
+<h2 id="instead-of-pake-why-do-we-directly-use-shared-password-to-authenticate-each-side"><a class="header" href="#instead-of-pake-why-do-we-directly-use-shared-password-to-authenticate-each-side">Instead of PAKE, Why do we directly use shared password to authenticate each side?</a></h2>
+<p>The password is human-memorable weak secret.
+Its bits is too short, so it will be easily cracked.</p>
+<p>Suppose that we use the password to generate the session key directly.
+If the password is fixed, it means that
+all the session will use the same session key.
+This is very dangerous.
+If the password is leaked out, then all the sessions will be compromised.</p>
+<p>If the password is random generated each time,
+so every session will use different session key.
+This indeed can avoid affecting other session
+when the password is later disclosed.
+However, the session whose password is disclosed is still cracked.</p>
+<p>On the other hand, <em>PAKE</em> protocol can generate different session keys
+even if the password is fixed.
+What's more, if the password is leaked out,
+the established sessions and their session keys will still be safe.
+The most important thing is that the session key is high-entropy,
+so it's very hard to be cracked.</p>
+<h2 id="when-should-we-use-j-pake-instead-of-other-pake"><a class="header" href="#when-should-we-use-j-pake-instead-of-other-pake">When should we use J-PAKE instead of other PAKE?</a></h2>
+<p>If some devices are unable to operate large exponent,
+the J-PAKE may be helpful.
+The required bits of the used exponent in J-PAKE
+is smaller than <em>EKE</em>, <em>SPEKE</em>.</p>
+<p>However, <em>J-PAKE</em> needs 2 rounds rather then <em>EKE</em> and <em>SPEKE</em>
+who only need one round.
+Hence, if network latency is long,
+then <em>J-PAKE</em> might not be a good approach.
+Otherwise, you can consider it.</p>
+<h2 id="can-j-pake-prevent-all-the-known-attacks-for-eke-and-speke"><a class="header" href="#can-j-pake-prevent-all-the-known-attacks-for-eke-and-speke">Can J-PAKE prevent all the known attacks for EKE and SPEKE?</a></h2>
+<h2 id="can-j-pake-prevent-dosdenial-of-service-attack"><a class="header" href="#can-j-pake-prevent-dosdenial-of-service-attack">Can J-PAKE prevent DOS(Denial of Service) attack?</a></h2>
+<h2 id="random-pattern-attack"><a class="header" href="#random-pattern-attack">Random Pattern Attack</a></h2>
+<p>Random function is pseudo, so the pattern is probably predictable.
+How do it affect <em>EKE</em>, <em>SPEKE</em>, <em>J-PAKE</em> ....</p>
+<h2 id="eke-vs-speke"><a class="header" href="#eke-vs-speke">EKE v.s. SPEKE</a></h2>
+<p>When to use? Which should you choose?</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="appendix"><a class="header" href="#appendix">Appendix</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="hash"><a class="header" href="#hash">Hash</a></h1>
+<p><img src="appendix/hash.png" alt="hash" /></p>
+<p>A well-designed hash should not collision when the size of domain space
+is same as the size of range (like the figure above, there is no collision
+when \( hash: [1, 7] \rightarrow [1,7] \)).</p>
+<table><thead><tr><th>Num/Rnd</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead><tbody>
+<tr><td>1</td><td>3</td><td>2</td><td>6</td><td>7</td><td><strong>1</strong></td><td>3</td></tr>
+<tr><td>2</td><td>6</td><td>7</td><td>1</td><td>3</td><td><strong>2</strong></td><td>6</td></tr>
+<tr><td>3</td><td>2</td><td>6</td><td>7</td><td>1</td><td><strong>3</strong></td><td>2</td></tr>
+<tr><td>4</td><td>5</td><td><strong>4</strong></td><td>5</td><td><strong>4</strong></td><td>5</td><td><strong>4</strong></td></tr>
+<tr><td>5</td><td>4</td><td><strong>5</strong></td><td>4</td><td><strong>5</strong></td><td>4</td><td><strong>5</strong></td></tr>
+<tr><td>6</td><td>7</td><td>1</td><td>3</td><td>2</td><td><strong>6</strong></td><td>7</td></tr>
+<tr><td>7</td><td>1</td><td>3</td><td>2</td><td>6</td><td><strong>7</strong></td><td>1</td></tr>
+<tr><td>8</td><td><strong>5</strong></td><td>4</td><td><strong>5</strong></td><td>4</td><td>4</td><td><strong>5</strong></td></tr>
+<tr><td>9</td><td><strong>7</strong></td><td>1</td><td>3</td><td>2</td><td>6</td><td><strong>7</strong></td></tr>
+<tr><td>10</td><td><strong>3</strong></td><td>2</td><td>6</td><td>7</td><td><strong>3</strong></td><td>2</td></tr>
+</tbody></table>
+<p>There is no collision in each round when the size is available.
+For example, we can see that \( [1, 7] \) are never have collisions.
+The reason is simple.
+If we can guarantee there is no collision when size is available,
+then it means that the results in first round will have no collision and
+it must be one-to-one from the domain space to the range space.
+Thus, each number in available size will be
+one-to-one mapped to a different number.
+In the same manner, the results after second round will keep no collision.
+The results from first round must also be one-to-one mapped to
+different numbers in round 2.</p>
+<p>From another view, you can prove it by contradiction.
+Assume that we can guarantee there is no collision when size is available.
+If we have a collision in the \( n \) round, then it means that
+there is two numbers of \( n-1 \) round are mapped to a same number
+in the \( n \) round.
+This contradict our assumption for no collision when size is available.</p>
+<p>On the other hand, the numbers who is out of the available size
+(e.g., [8, 10] on above table) must have collisions.
+In addition, after the first round, they will disappear
+because no number will be mapped to them(they are out of size!).</p>
+<p>The hash function must have a pattern.
+The bold-faced numbers label their periods.
+If the number will be mapped to another different number in each round.
+At the first round, it will have \( size - 1 \) choices.
+At the second round, it still have \( size - 1 \) choices,
+but there is one choice will be the initial number.
+If the initial number is mapped, then the period occurs.
+Otherwise, if the initial number isn't mapped,
+then there are \( size - 2 \) choices.
+Similarly, at the third round, it has at most \( size - 3 \) choices
+to prevent the period occurs.
+However, at the \( size \) round, there is no choice to stop period presented.
+Therefore, the period must happen.</p>
+<p><img src="appendix/bad-hash.png" alt="bad-hash" /></p>
+<p>However, if the hash is not well-designed(e.g., collision
+when \( hash: [1, 7] \rightarrow [1,7] \)), then ....</p>
+<table><thead><tr><th>Num/Rnd</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr></thead><tbody>
+<tr><td>1</td><td>4</td><td>6</td><td>3</td><td><strong>1</strong></td><td>4</td><td>6</td><td>3</td><td><strong>1</strong></td></tr>
+<tr><td>2</td><td><strong>3</strong></td><td>1</td><td>4</td><td>6</td><td><strong>3</strong></td><td>1</td><td>4</td><td>6</td></tr>
+<tr><td>3</td><td>1</td><td>4</td><td>6</td><td><strong>3</strong></td><td>1</td><td>4</td><td>6</td><td><strong>3</strong></td></tr>
+<tr><td>4</td><td>6</td><td>3</td><td>1</td><td><strong>4</strong></td><td>6</td><td>3</td><td>1</td><td><strong>4</strong></td></tr>
+<tr><td>5</td><td>2</td><td><strong>3</strong></td><td>1</td><td>4</td><td>6</td><td><strong>3</strong></td><td>1</td><td>4</td></tr>
+<tr><td>6</td><td>3</td><td>1</td><td>4</td><td><strong>6</strong></td><td>3</td><td>1</td><td>4</td><td><strong>6</strong></td></tr>
+<tr><td>7</td><td>5</td><td>2</td><td><strong>3</strong></td><td>1</td><td>4</td><td>6</td><td><strong>3</strong></td><td>1</td></tr>
+<tr><td>8</td><td><strong>4</strong></td><td>6</td><td>3</td><td>1</td><td><strong>4</strong></td><td>6</td><td>3</td><td>1</td></tr>
+<tr><td>9</td><td><strong>6</strong></td><td>3</td><td>1</td><td>4</td><td><strong>6</strong></td><td>3</td><td>1</td><td>4</td></tr>
+<tr><td>10</td><td>7</td><td>5</td><td>2</td><td><strong>3</strong></td><td>1</td><td>4</td><td>6</td><td><strong>3</strong></td></tr>
+</tbody></table>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="modular-arithmetic"><a class="header" href="#modular-arithmetic">Modular Arithmetic</a></h1>
+<h2 id="congruence-relation"><a class="header" href="#congruence-relation">Congruence Relation</a></h2>
+<p>If
+\begin{aligned}
+p \mid a - b
+\end{aligned}</p>
+<p>$$
+\text{, where $a, b, p \in Z$ with $0 \leq a, b &lt; p$}
+$$</p>
+<p>then we denote:</p>
+<p>$$
+a \equiv b \pmod p
+$$</p>
+<h3 id="assumptions-for-following-operations"><a class="header" href="#assumptions-for-following-operations">Assumptions for Following Operations</a></h3>
+<p>If
+$$
+a \equiv b \pmod p
+$$</p>
+<p>and</p>
+<p>$$
+c \equiv d \pmod p
+$$</p>
+<h3 id="addition-and-subtraction"><a class="header" href="#addition-and-subtraction">Addition and Subtraction</a></h3>
+<p>$$
+a \pm c \equiv b \pm d \pmod p
+$$</p>
+<p>Proof:</p>
+<p>We know \( p \mid a-b \) and \( p \mid c-d \), so</p>
+<p>\begin{aligned}
+a - b = mp \\
+c - d = np
+\end{aligned}</p>
+<p>$$
+\text{, where $m,n \in Z$}
+$$</p>
+<p>The above equations can be represented as:</p>
+<p>\begin{aligned}
+a = mp + b \\
+c = np + d
+\end{aligned}</p>
+<p>Thus,</p>
+<p>\begin{aligned}
+a \pm c =&amp; (mp + b) \pm (np + d) \\
+=&amp; (m \pm n)p + (b \pm d) \\
+=&amp; kp + (b \pm d)
+\end{aligned}</p>
+<p>$$
+\text{, where } k \in Z
+$$</p>
+<p>and it's obviously that</p>
+<p>$$
+a \pm c \equiv b \pm d \pmod p
+$$</p>
+<h3 id="multiplication"><a class="header" href="#multiplication">Multiplication</a></h3>
+<p>$$
+a \cdot c \equiv b \cdot d \pmod p
+$$</p>
+<p>Proof:
+\begin{aligned}
+a - b = mp \Rightarrow a = mp + b
+\end{aligned}</p>
+<p>$$
+\text{, where } m \in Z
+$$</p>
+<p>\begin{aligned}
+c - d = np \Rightarrow c = np + d
+\end{aligned}</p>
+<p>$$
+\text{, where } n \in Z
+$$</p>
+<p>\begin{aligned}
+a \cdot c =&amp; (mp + b) \cdot (np + d) \\
+=&amp; (mnp + md + nb) \cdot p + (b \cdot d) \\
+=&amp; kp + (b \cdot d)
+\end{aligned}</p>
+<p>$$
+\text{, where } k \in Z
+$$</p>
+<p>Thus,</p>
+<p>$$
+a \cdot c \equiv b \cdot d \pmod p
+$$</p>
+<p>The other obvious truth is that:</p>
+<p>\begin{aligned}
+r \cdot a \equiv r \cdot b \pmod p
+\end{aligned}</p>
+<p>$$
+\text{, where } r \in Z
+$$</p>
+<p>This is pretty easy to prove by:</p>
+<p>$$
+a = mp + b
+$$</p>
+<p>$$
+\begin{aligned}
+r \cdot a =&amp; r \cdot (mp + b) \\
+=&amp; (rm) \cdot p + r \cdot b \\
+=&amp; q \cdot p + r \cdot b
+\end{aligned}
+$$</p>
+<h3 id="exponentiation"><a class="header" href="#exponentiation">Exponentiation</a></h3>
+<p>\begin{aligned}
+a^n \equiv b^n \pmod p
+\end{aligned}</p>
+<p>$$
+\text{, where } n \in Z
+$$</p>
+<p>Proof:</p>
+<p>I. <strong>Bottom-up Approach</strong></p>
+<p>By \( a \cdot c \equiv b \cdot d \pmod p \)
+, if we replace \( c \) with \( a \) and \( d \) with \( b \),
+then</p>
+<p>$$
+a \cdot a \equiv b \cdot b \pmod p
+$$</p>
+<p>$$
+\Rightarrow a^2 \equiv b^2 \pmod p
+$$</p>
+<p>Next, by replacing \( c \) with \( a^2 \) and \( d \) with \( b^2 \),
+we can get</p>
+<p>$$
+a \cdot a^2 \equiv b \cdot b^2 \pmod p
+$$</p>
+<p>$$
+\Rightarrow a^3 \equiv b^3 \pmod p
+$$</p>
+<p>Finally you can run to \( a^n \equiv b^n \pmod p \).</p>
+<p>II. <strong>Mathematical Induction</strong></p>
+<p>Formally, we can use <em>mathematical induction</em> to prove it.</p>
+<p><strong>1. Basis</strong>: the statement is true for \( n = 1 \)
+because \( a \equiv b \pmod p \) is true.</p>
+<p><strong>2. Inductive step</strong>:
+Show that if \( n = k \) holds, then also \( n = k + 1 \) holds.
+Assume \( a^k \equiv b^k \pmod p \) is true.
+By \( a \cdot c \equiv b \cdot d \pmod p \):</p>
+<p>$$
+a \cdot a^k \equiv b \cdot b^k \pmod p
+$$</p>
+<p>$$
+\Rightarrow a^{k+1} \equiv b^{k+1} \pmod p
+$$</p>
+<p>thereby showing that indeed \( n = k + 1 \) holds.</p>
+<h2 id="modular-operation"><a class="header" href="#modular-operation">Modular Operation</a></h2>
+<p>Suppose that \( a, b, p \in Z \)</p>
+<h3 id="addition-and-subtraction-1"><a class="header" href="#addition-and-subtraction-1">Addition and Subtraction</a></h3>
+<p>$$
+(a \pm b) \bmod p = (a \bmod p \pm b \bmod p ) \bmod p
+$$</p>
+<p>Proof:</p>
+<p>Assume that
+\begin{aligned}
+a = mp + i \Rightarrow a \bmod p = i \\
+\end{aligned}</p>
+<p>$$
+\text{, where } m, i\in Z \text{ and } 0 \leq i &lt; p
+$$</p>
+<p>and</p>
+<p>\begin{aligned}
+b = np + j \Rightarrow b \bmod p = j \\
+\end{aligned}</p>
+<p>$$
+\text{, where } n, j \in Z \text{ and } 0 \leq j &lt; p
+$$</p>
+<p>Therefore,
+$$
+\begin{aligned}
+(a \pm b) \bmod p &amp;= ((m \pm n)p + (i \pm j)) \bmod p \\
+&amp;= (i \pm j) \bmod p \\
+&amp;= (a \bmod p \pm b \bmod p) \bmod p
+\end{aligned}
+$$</p>
+<h3 id="multiplication-1"><a class="header" href="#multiplication-1">Multiplication</a></h3>
+<p>$$
+(a \cdot b) \bmod p = (a \bmod p \cdot b \bmod p ) \bmod p
+$$</p>
+<p>Proof:</p>
+<p>The step is basically same as above.
+First, we assume that
+\begin{aligned}
+a = mp + i \Rightarrow a \bmod p = i
+\end{aligned}</p>
+<p>$$
+\text{, where } m, i\in Z \text{ and } 0 \leq i &lt; p
+$$</p>
+<p>and</p>
+<p>\begin{aligned}
+b = np + j \Rightarrow b \bmod p = j
+\end{aligned}</p>
+<p>$$
+\text{, where } n, j \in Z \text{ and } 0 \leq j &lt; p
+$$</p>
+<p>Therefore,</p>
+<p>\begin{aligned}
+(a \cdot b) \bmod p &amp;= ((mp + i) \cdot (np + j)) \bmod p \\
+&amp;= ((mnp + mj + ni)p + i \cdot j) \bmod p \\
+&amp;= (i \cdot j) \bmod p \\
+&amp;= (a \bmod p \cdot b \bmod p) \bmod p
+\end{aligned}</p>
+<p>On the other hand, another multiplication operation is:
+\begin{aligned}
+(x \cdot y) \bmod p = x \cdot (y \bmod p) \bmod p
+\end{aligned}</p>
+<p>$$
+\text{, where } x, y \in Z
+$$</p>
+<p>This is easy to prove:</p>
+<p>\begin{aligned}
+(x \cdot y) \bmod p &amp;= (x \cdot (mp + r)) \bmod p \\
+&amp;= (x \cdot mp + x \cdot r) \bmod p \\
+&amp;= x \cdot r \bmod p \\
+&amp;= x \cdot (y \bmod p) \bmod p
+\end{aligned}</p>
+<p>$$
+\text{, where } y = mp + r, m, r \in Z \text{ and } 0 \leq r &lt; p
+$$</p>
+<h3 id="exponentiation-1"><a class="header" href="#exponentiation-1">Exponentiation</a></h3>
+<p>\begin{aligned}
+a^n \bmod p = (a \bmod p)^n \bmod p
+\end{aligned}</p>
+<p>$$
+\text{, where } n \in Z
+$$</p>
+<p>Proof:</p>
+<p>I. <strong>Mathematical Induction</strong></p>
+<ol>
+<li>
+<p><strong>Basis</strong>: the statement is true for \( n = 1 \)
+because \( (a \bmod p) \bmod p \) still equal to \( a \bmod p \).</p>
+</li>
+<li>
+<p><strong>Inductive step</strong>:
+Show that if \( n = k \) holds, then also \( n = k + 1 \) holds.
+Assume \( a^k \bmod p = (a \bmod p)^k \bmod p \) is true, then</p>
+</li>
+</ol>
+<p>\begin{aligned}
+(a \cdot a^k) \bmod p &amp;= (a \bmod p \cdot a^k \bmod p) \bmod p \\
+&amp;= (a \bmod p \cdot (a \bmod p)^k \bmod p) \bmod p \\
+&amp;= (a \bmod p \cdot (a \bmod p)^k) \bmod p \\
+&amp;= (a \bmod p)^{k+1} \bmod p
+\end{aligned}</p>
+<ul>
+<li>The first equation is derived by replacing
+\( b \) with \( a^k \) in \( (a \cdot b) \bmod p = (a \bmod p \cdot b \bmod p ) \bmod p \)</li>
+<li>The second equation is derived from the assumption:
+\( a^k \bmod p = (a \bmod p)^k \bmod p \)</li>
+<li>The third equation is derived by replacing \( x \) with \( a \bmod p \)
+and \( y \) with \( (a \bmod p)^k \) in \( x \cdot (y \bmod p) \bmod p = (x \cdot y) \bmod p \)</li>
+</ul>
+<p>Finally, we can get:
+$$
+\Rightarrow a^{k+1} \bmod p = (a \bmod p)^{k+1} \bmod p
+$$
+thereby showing that indeed \( n = k + 1 \) holds.</p>
+<p>II. <strong>Bottom-up Approach</strong></p>
+<p>By \( (a \cdot b) \bmod p = (a \bmod p \cdot b \bmod p ) \bmod p \),
+if we replace \( b \) with \( a \), then</p>
+<p>$$
+(a \cdot a) \bmod p = (a \bmod p \cdot a \bmod p ) \bmod p
+$$</p>
+<p>$$
+\Rightarrow a^2 \bmod p = (a \bmod p)^2 \bmod p
+$$</p>
+<p>Next, by replacing \( b \) with \( a^2 \), we can get:</p>
+<p>\begin{aligned}
+(a \cdot a^2) \bmod p
+&amp;= (a \bmod p \cdot a^2 \bmod p ) \bmod p \\
+&amp;= (a \bmod p \cdot (a \bmod p)^2 \bmod p ) \bmod p
+\end{aligned}</p>
+<p>By \( (x \cdot y) \bmod p = x \cdot (y \bmod p) \bmod p \),
+if we put \( a \bmod p \) to \( x \) and \( (a \bmod p)^2 \) to \( y \),
+then the above equation will be</p>
+<p>\begin{aligned}
+a^3 \bmod p
+&amp;= (a \cdot a^2) \bmod p \\
+&amp;= (a \bmod p \cdot (a \bmod p)^2 \bmod p ) \bmod p \\
+&amp;= (a \bmod p \cdot (a \bmod p)^2) \bmod p \\
+&amp;= (a \bmod p)^3 \bmod p
+\end{aligned}</p>
+<p>Again and again, you finally can run to \( n \) by same technique.</p>
+<h2 id="modular-multiplicative-inverse"><a class="header" href="#modular-multiplicative-inverse">Modular Multiplicative Inverse</a></h2>
+<p>the modular multiplicative inverse of an integer a modulo \( p \)
+is an integer \( a^{-1} \) such that</p>
+<p>$$
+a \cdot a^{-1} \equiv 1 \pmod p
+$$</p>
+<p>or</p>
+<p>$$
+a \cdot a^{-1} \bmod p = 1
+$$</p>
+<p>The \( a^{-1} \) exists if and only if \( a \) and \( p \) are
+coprime (i.e., if \( gcd(a, p) = 1 \)).</p>
+<p><strong>Theorem.</strong> <em>Let \( a, p \in Z \) with \( p &gt; 0 \).
+Then \( a \) has a multiplicative inverse modulo \( p \)
+if and only if \( a \) and \( p \) are relatively prime.</em></p>
+<p><strong>Proof</strong>:</p>
+<p>First ,we prove that:
+if \( a \) has an inverse mod \( p \), then \( a \) and \( p \) must be coprime.</p>
+<p>\( a \cdot a^{-1} \equiv 1 \pmod p \) implies that
+\( p \mid a \cdot a^{-1} - 1 \). Thus,</p>
+<p>\begin{aligned}
+a \cdot a^{-1} - 1 = mp
+\end{aligned}</p>
+<p>$$
+\text{, where } m \in Z
+$$</p>
+<p>and it can be rewritten into</p>
+<p>\begin{aligned}
+a \cdot a^{-1} + np = 1
+\end{aligned}</p>
+<p>$$
+\text{, where } n = -m
+$$</p>
+<p>Then, assume \( s \) is the product of all the prime factors that
+\( a \) and \( p \) share, \( s &gt; 0 \), which is actually the
+<strong>greatest common divisors</strong> of \( a \) and \( p \):</p>
+<p>$$
+s = gcd(a, p)
+$$</p>
+<p>and</p>
+<p>\begin{aligned}
+a = s \cdot x
+\end{aligned}</p>
+<p>$$
+\text{, where } x \in Z
+$$</p>
+<p>\begin{aligned}
+p = s \cdot y
+\end{aligned}</p>
+<p>$$
+\text{, where } y \in Z
+$$</p>
+<p>Therefore,</p>
+<p>\begin{aligned}
+a \cdot a^{-1} + n \cdot p
+&amp;= (s \cdot x) \cdot a^{-1} + n \cdot (s \cdot y) \\
+&amp;= s \cdot (x \cdot a^{-1} + n \cdot y) \\
+&amp;= 1
+\end{aligned}</p>
+<p>and we get:</p>
+<p>$$
+x \cdot a^{-1} + n \cdot y = \frac{1}{s}
+$$</p>
+<p>The left side \( x \cdot a^{-1} + n \cdot y \) is the sum of products of integers,
+so it must be an integer.
+Thus, the right side \( \frac{1}{s} \) must also be an integer.
+We have only two choices: \( s = \pm 1 \).
+However, \( s &gt; 0 \), so \( s = 1 \).</p>
+<p>Finally, we can know that:
+<em>If \( a \) has an inverse mod \( p \), then \( a \) and \( p \) must be coprime.</em></p>
+<p>Second, we prove that:
+if \( a \) and \( p \) is coprime, then \( a \) has an inverse mod \( p \).</p>
+<p>From <a href="appendix/gcd.html">Bézout's identity</a>:</p>
+<p>$$
+ax + py = gcd(a, p) = 1
+$$</p>
+<p>Thus,</p>
+<p>$$
+ax \equiv 1 \pmod p
+$$</p>
+<p>The \( x \) here is actually the \( a^{-1} \).</p>
+<h2 id="references-10"><a class="header" href="#references-10">References</a></h2>
+<ul>
+<li><a href="https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/what-is-modular-arithmetic">KHANacademy: What is modular arithmetic</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="greatest-common-divisors"><a class="header" href="#greatest-common-divisors">Greatest Common Divisors</a></h1>
+<p>If \( a, b \in Z \) with \( a, b \neq 0 \), then the largest positive integer
+which divides both \( a \) and \( b \) is the <strong>greatest common divisor</strong>
+of two integers \( a \) and \( b \). It is denoted \( gcd(a, b) \).
+By convention, we define \( gcd(0, 0) = 0 \).
+For some special case: \( gcd(0, x) = x \), where \( x \in Z \).
+It's obvious because \( 0 = 0 \cdot x \).</p>
+<h2 id="bézouts-lemma"><a class="header" href="#bézouts-lemma">Bézout's Lemma</a></h2>
+<p>Let \( a, b \in Z \) with \( a, b \neq 0 \), then
+there exist integers \( s \) and \( t \) such that \( as + bt = gcd(a,b) \).
+That is, \( gcd(a, b) \) is a linear combination of a and b.</p>
+<p>$$
+\exists s,t \in Z: as + bt = gcd(a,b)
+$$</p>
+<p><strong>Proof</strong></p>
+<p>Consider the set
+$$
+S = {ax + by : x, y \in Z} \cap (N \backslash {0})
+$$
+or
+$$
+S = {ax + by : x, y \in Z \text{ and } ax + by &gt; 0}
+$$</p>
+<p>\( S \) is definitely non-empty set.
+Take \( x = a, y = b \), then \( k = a \cdot a + b \cdot b &gt; 0 \)
+because \( a, b \neq 0 \). So, \( k \in S \) and \( S \neq \emptyset \).</p>
+<p>Since \( S \) is a nonempty subset of \( N \),
+\( {S \neq \emptyset } \cap {S \subseteq N} \),
+there is a <em>least element</em> by the <strong>Well-Ordering Principle</strong>,
+which we denote by \( d \).</p>
+<p>Then there exist integers \( x_0, y_0 \) such that
+$$
+d = a \cdot x_0 + b \cdot y_0
+$$
+, \( d \) is the minimal positive integer in \( S \).</p>
+<p>By Division Algorithm, we assume that
+\begin{aligned}
+a = q_a \cdot d + r_a
+\end{aligned}
+$$
+\text{, where } q_a, r_a \in Z, q_a \text{ is the quotient and } 0 \leq r_a &lt; d
+$$</p>
+<p>and</p>
+<p>\begin{aligned}
+b = q_b \cdot d + r_b
+\end{aligned}
+$$
+\text{, where } q_b, r_b \in Z, q_b \text{  is the quotient and } 0 \leq r_b &lt; d
+$$</p>
+<p>From above, we can get:</p>
+<p>\begin{aligned}
+r_a &amp;= a - q_a \cdot d \\
+&amp;= a - q_a \cdot (a \cdot x_0 + b \cdot y_0) \\
+&amp;= a(1 - q_a \cdot x_0) + b(-q_a \cdot y_0)
+\end{aligned}</p>
+<p>Thus, \( r_a \) is a linear combination of \( a \) and \( b \).
+If \( r_a &gt; 0 \), then \( r_a \in S \), and since \( r_a &lt; d \),
+it means that there is a element \( r_a \) in \( S \) smaller than \( d \).
+We have a <strong>contradiction</strong> that \( d \) is NOT the least element of \( S \).</p>
+<p>Thus, \( r_a \) must be \( 0 \), and it means that \( a = q_a \cdot d \), so \( q_a \mid a \).
+In same manner, we can know \( b = q_b \cdot d \) and \( q_b \mid b \).</p>
+<p>Therefore, \( d \) is a common divisor of \( a \) and \( b \).</p>
+<p>Next, we will show \( d \) is the greatest common divisor of \( a \) and \( b \).</p>
+<p>Let \( c \) is another positive common divisor of \( a \) and \( b \),
+\( c \mid a \) and \( c \mid b \).</p>
+<p>Then,</p>
+<p>\begin{aligned}
+d &amp;= a \cdot x_0 + b \cdot y_0 \\
+&amp;= c \cdot m \cdot x_0 + c \cdot n \cdot y_0 \\
+&amp;= c \cdot (m \cdot x_0 + n \cdot y_0) \\
+&amp;= c \cdot z \\
+\end{aligned}</p>
+<p>$$
+\text{, where $m = \frac{a}{c}, n = \frac{b}{c}$ }
+\text{ and z is a positive integer(because c, d &gt; 0) }
+$$</p>
+<p>Thus, we can know \( c \mid d \) and \( c \leq d \).</p>
+<p>In summary,</p>
+<ol>
+<li>\( d \) is a common divisor of \( a \) and \( b \)</li>
+<li>Every positive common divisor of \( a \) and \( b \), \( c \),
+can divide \( d \).</li>
+</ol>
+<p>Therefore,
+$$
+d = gcd(a, b)
+$$</p>
+<p>Finally, we prove that:
+there exist integers \( s, t \) such that \( d = as + bt = gcd(a, b) \).</p>
+<h2 id="references-11"><a class="header" href="#references-11">References</a></h2>
+<ul>
+<li>https://www.math.byu.edu/~bakker/M290/Lectures/Lec30.pdf</li>
+<li>https://math.berkeley.edu/~sagrawal/su14_math55/notes_gcd.pdf</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="group-theory"><a class="header" href="#group-theory">Group Theory</a></h1>
+<h2 id="definition-of-group"><a class="header" href="#definition-of-group">Definition of Group</a></h2>
+<h2 id="order-of-group"><a class="header" href="#order-of-group">Order of Group</a></h2>
+<h2 id="group-zp"><a class="header" href="#group-zp">Group Z<sup>×</sup><sub>p</sub></a></h2>
+<p>The <strong>multiplicative</strong> group \( Z^{\times}_p \) is a group
+containing integers between 1 and p - 1 (p is a prime number):</p>
+<p>$$
+Z^{\times}_p = { 1, 2, .... p-1 } \text { , where } p \text{ is a prime number.}
+$$</p>
+<p>and the basic operation of this group is <strong>multiplication</strong>.
+By taking the <strong>remainder on division</strong> by \( p \),
+the results of multiplication of elements is ensured closure
+and limited between \( 1 \) to \( p - 1 \).</p>
+<h2 id="multiplicative-group-of-integers-modulo-p"><a class="header" href="#multiplicative-group-of-integers-modulo-p">Multiplicative Group of Integers Modulo p</a></h2>
+<h3 id="examples-1"><a class="header" href="#examples-1">Examples</a></h3>
+<p>Let \( G = { 1, 2, 3, 4 } \) with prime \( p = 5 \) and generator \( g = 2 \).</p>
+<p>\begin{aligned}
+2^1 \bmod 5 &amp;= 2 \\
+2^2 \bmod 5 &amp;= 2 \cdot 2 \bmod 5 \\
+&amp;= 4 \\
+2^3 \bmod 5 &amp;= 4 \cdot 2 \bmod 5 \\
+&amp;= 3 \\
+2^4 \bmod 5 &amp;= 3 \cdot 2 \bmod 5 \\
+&amp;= 1 \\
+2^5 \bmod 5 &amp;= 1 \cdot 2 \bmod 5 \\
+&amp;= 2
+\end{aligned}</p>
+<table><thead><tr><th>power</th><th>value</th></tr></thead><tbody>
+<tr><td>1</td><td>2</td></tr>
+<tr><td>2</td><td>4</td></tr>
+<tr><td>3</td><td>3</td></tr>
+<tr><td>4</td><td>1</td></tr>
+<tr><td>5</td><td>2</td></tr>
+</tbody></table>
+<p>Let \( G = { 1, 2, 3, 4, 5, 6, 7 } \)
+with prime \( p = 7 \) and generator \( g = 3 \).</p>
+<p>\begin{aligned}
+3^1 \bmod 5 &amp;= 3 \\
+3^2 \bmod 5 &amp;= 3 \cdot 3 \bmod 7 \\
+&amp;= 2 \\
+3^3 \bmod 5 &amp;= 2 \cdot 3 \bmod 7 \\
+&amp;= 6 \\
+3^4 \bmod 5 &amp;= 6 \cdot 3 \bmod 7 \\
+&amp;= 4 \\
+3^5 \bmod 5 &amp;= 4 \cdot 3 \bmod 7 \\
+&amp;= 5 \\
+3^6 \bmod 5 &amp;= 5 \cdot 3 \bmod 7 \\
+&amp;= 1 \\
+3^7 \bmod 5 &amp;= 1 \cdot 3 \bmod 7 \\
+&amp;= 3
+\end{aligned}</p>
+<table><thead><tr><th>power</th><th>value</th></tr></thead><tbody>
+<tr><td>1</td><td>3</td></tr>
+<tr><td>2</td><td>2</td></tr>
+<tr><td>3</td><td>6</td></tr>
+<tr><td>4</td><td>4</td></tr>
+<tr><td>5</td><td>5</td></tr>
+<tr><td>6</td><td>1</td></tr>
+<tr><td>7</td><td>3</td></tr>
+</tbody></table>
+<p>Let \( G = { x \vert 0 &lt; x &lt; 23 \cap x \in N } \)
+with prime \( p = 23 \) and generator \( g = 5 \).</p>
+<p>\begin{aligned}
+5^1 \bmod 23    &amp;= 5 \\
+5^2 \bmod 23    &amp;= 5 \cdot 5 \bmod 23 \\
+&amp;= 2 \\
+5^3 \bmod 23    &amp;= 2 \cdot 5 \bmod 23 \\
+&amp;= 10 \\
+5^4 \bmod 23    &amp;= 10 \cdot 5 \bmod 23 \\
+&amp;= 4 \\
+5^5 \bmod 23    &amp;= 4 \cdot 5 \bmod 23 \\
+&amp;= 20 \\
+5^6 \bmod 23    &amp;= 20 \cdot 5 \bmod 23 \\
+&amp;= 8 \\
+5^7 \bmod 23    &amp;= 8 \cdot 5 \bmod 23 \\
+&amp;= 17 \\
+5^8 \bmod 23    &amp;= 17 \cdot 5 \bmod 23 \\
+&amp;= 16 \\
+5^9 \bmod 23    &amp;= 16 \cdot 5 \bmod 23 \\
+&amp;= 11 \\
+5^{10} \bmod 23 &amp;= 11 \cdot 5 \bmod 23 \\
+&amp;= 9 \\
+5^{11} \bmod 23 &amp;= 9 \cdot 5 \bmod 23 \\
+&amp;= 22 \\
+5^{12} \bmod 23 &amp;= 22 \cdot 5 \bmod 23 \\
+&amp;= 18 \\
+5^{13} \bmod 23 &amp;= 18 \cdot 5 \bmod 23 \\
+&amp;= 21 \\
+5^{14} \bmod 23 &amp;= 21 \cdot 5 \bmod 23 \\
+&amp;= 13 \\
+5^{15} \bmod 23 &amp;= 8 \cdot 5 \bmod 23 \\
+&amp;= 19 \\
+5^{16} \bmod 23 &amp;= 19 \cdot 5 \bmod 23 \\
+&amp;= 3 \\
+5^{17} \bmod 23 &amp;= 3 \cdot 5 \bmod 23 \\
+&amp;= 15 \\
+5^{18} \bmod 23 &amp;= 15 \cdot 5 \bmod 23 \\
+&amp;= 6 \\
+5^{19} \bmod 23 &amp;= 6 \cdot 5 \bmod 23 \\
+&amp;= 7 \\
+5^{20} \bmod 23 &amp;= 7 \cdot 5 \bmod 23 \\
+&amp;= 12 \\
+5^{21} \bmod 23 &amp;= 12 \cdot 5 \bmod 23 \\
+&amp;= 14 \\
+5^{22} \bmod 23 &amp;= 14 \cdot 5 \bmod 23 \\
+&amp;= 1  \\
+5^{23} \bmod 23 &amp;= 1 \cdot 5 \bmod 23 \\
+&amp;= 5
+\end{aligned}</p>
+<table><thead><tr><th>power</th><th>value</th></tr></thead><tbody>
+<tr><td>1</td><td>5</td></tr>
+<tr><td>2</td><td>2</td></tr>
+<tr><td>3</td><td>10</td></tr>
+<tr><td>4</td><td>4</td></tr>
+<tr><td>5</td><td>20</td></tr>
+<tr><td>6</td><td>8</td></tr>
+<tr><td>7</td><td>17</td></tr>
+<tr><td>8</td><td>16</td></tr>
+<tr><td>9</td><td>11</td></tr>
+<tr><td>10</td><td>9</td></tr>
+<tr><td>11</td><td>22</td></tr>
+<tr><td>12</td><td>18</td></tr>
+<tr><td>13</td><td>21</td></tr>
+<tr><td>14</td><td>13</td></tr>
+<tr><td>15</td><td>19</td></tr>
+<tr><td>16</td><td>3</td></tr>
+<tr><td>17</td><td>15</td></tr>
+<tr><td>18</td><td>6</td></tr>
+<tr><td>19</td><td>7</td></tr>
+<tr><td>20</td><td>12</td></tr>
+<tr><td>21</td><td>14</td></tr>
+<tr><td>22</td><td>1</td></tr>
+<tr><td>23</td><td>5</td></tr>
+</tbody></table>
+<h2 id="schnorr-group"><a class="header" href="#schnorr-group">Schnorr group</a></h2>
+<p>A <a href="https://en.wikipedia.org/wiki/Schnorr_group" title="Schnorr group">Schnorr group</a> is a subgroup of \( Z^{\times}_p \),
+the multiplicative group of integers modulo \( p \) for some  large prime \( p \).</p>
+<p>The group can be generated by choosing \( p, q, r \) such that
+$$
+p = qr + 1 \text{ ,where } q, r \text{ are also prime}
+$$
+Then choose any \( h, 1 &lt; h &lt; p \) such that
+$$
+h^r \neq 1 \pmod p
+$$
+The value
+$$
+g = h^r \bmod p
+$$
+is the <strong>generator</strong> of a \( Z^{\times}_p \) with <strong>prime order</strong> \( q \).</p>
+<h3 id="examples-2"><a class="header" href="#examples-2">Examples</a></h3>
+<p>Let \( q = 11, r = 2, p = 23 \).
+Then we choose a \( h \) such that \( h^2 \bmod 23 \neq 1 \), where \( 1 &lt; h &lt; 23 \).
+Suppose we select \( h = 3 \), then generator \( g = 9 \).</p>
+<p>\begin{aligned}
+9^1 \bmod 23 &amp;= 9 \\
+9^2 \bmod 23 &amp;= 9 \cdot 9 \bmod 23 \\
+&amp;= 12 \\
+9^3 \bmod 23 &amp;= 12 \cdot 9 \bmod 23 \\
+&amp;= 16 \\
+9^4 \bmod 23 &amp;= 16 \cdot 9 \bmod 23 \\
+&amp;= 6 \\
+9^5 \bmod 23 &amp;= 6 \cdot 9 \bmod 23 \\
+&amp;= 8 \\
+9^6 \bmod 23 &amp;= 8 \cdot 9 \bmod 23 \\
+&amp;= 3 \\
+9^7 \bmod 23 &amp;= 3 \cdot 9 \bmod 23 \\
+&amp;= 4 \\
+9^8 \bmod 23 &amp;= 4 \cdot 9 \bmod 23 \\
+&amp;= 13 \\
+9^9 \bmod 23 &amp;= 13 \cdot 9 \bmod 23 \\
+&amp;= 2 \\
+9^{10} \bmod 23 &amp;= 2 \cdot 9 \bmod 23 \\
+&amp;= 18 \\
+9^{11} \bmod 23 &amp;= 18 \cdot 9 \bmod 23 \\
+&amp;= 1 \\
+\end{aligned}</p>
+<p>From above, we can verify the the generator \( g = 9 \)
+whose order is \( q = 11 \) such that \( g^q = 1 \).
+In summary, the above equations can be organized into the following table:</p>
+<table><thead><tr><th>power</th><th>value</th></tr></thead><tbody>
+<tr><td>1</td><td>9</td></tr>
+<tr><td>2</td><td>12</td></tr>
+<tr><td>3</td><td>16</td></tr>
+<tr><td>4</td><td>6</td></tr>
+<tr><td>5</td><td>8</td></tr>
+<tr><td>6</td><td>3</td></tr>
+<tr><td>7</td><td>4</td></tr>
+<tr><td>8</td><td>13</td></tr>
+<tr><td>9</td><td>2</td></tr>
+<tr><td>10</td><td>18</td></tr>
+<tr><td>11</td><td>1</td></tr>
+</tbody></table>
+<p>Therefore, we have a <a href="https://en.wikipedia.org/wiki/Schnorr_group" title="Schnorr group">Schnorr group</a> \( G = {1, 2, 3, 4, 6, 8, 9, 12, 13, 16, 18 } \)
+with prime order \( q = 11 \), modulo \( p = 23 \) and generator \( g = 9 \),
+which is a subgroup of \( Z^{\times}_p = Z^{\times}_{23} = { x \vert 0 &lt; x &lt; 23 \cap x \in N } \).</p>
+<h2 id="references-12"><a class="header" href="#references-12">References</a></h2>
+<ul>
+<li><a href="http://lkrv.fri.uni-lj.si/%7Eajurisic/tec3/gradiva/ECClassroom/Files/BG_3.htm" title="The group Zp">Group Z<sup>×</sup><sub>p</sub></a></li>
+<li><a href="https://en.wikipedia.org/wiki/Primitive_root_modulo_n" title="Primitive root modulo n">Primitive root modulo n</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Order_(group_theory)" title="Order (group theory)">Group Order</a></li>
+<li><a href="http://math.stackexchange.com/questions/23832/example-for-cyclic-groups-and-selecting-a-generator" title="Example for Cyclic Groups and Selecting a generator">Example for Cyclic Groups and Selecting a generator</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Schnorr_group" title="Schnorr group">Schnorr group</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="diffie-hellman-key-exchange-1"><a class="header" href="#diffie-hellman-key-exchange-1">Diffie-Hellman Key Exchange</a></h1>
+<p>Make two parties share secret messages.</p>
+<h2 id="problem"><a class="header" href="#problem">Problem</a></h2>
+<p>How do you shared secret messages with someone who don't have a shared key?
+If they have the secret shared key, then they can use key crypto to
+encrypt/decrypt messages.
+Is it possible to build a secret shared key between two parties
+if they already have a insecure channel?</p>
+<h3 id="alice-bob-and-eve"><a class="header" href="#alice-bob-and-eve">Alice, Bob, and Eve</a></h3>
+<p>Assume that there are Alice, Bob, and Eve.
+Alice and Bob want to talk to each other privately,
+but Eve can eavesdrop this channel.
+The problem is: Can Alice and Bob build a secure channel between them?</p>
+<p><img src="appendix/dh/eve-the-eavesdropper.png" alt="alice_bob_eve" title="Alice, Bob and Eve" /></p>
+<h4 id="passive-attacker-eve-a-eavesdropper-1"><a class="header" href="#passive-attacker-eve-a-eavesdropper-1">Passive Attacker: Eve, a eavesdropper</a></h4>
+<p>Eve can see all messages on the channel,
+but she can't modify them.</p>
+<h2 id="concept-diffie-hellman-in-colors"><a class="header" href="#concept-diffie-hellman-in-colors">Concept: Diffie-Hellman in colors</a></h2>
+<p><img src="appendix/dh/DH-color-0.png" alt="DH-color0" title="DH-color-0" /></p>
+<p>It's better to use the color-mixing to explain the <em>Diffie-Hellman</em>.
+At first, Alice and Bob agree to use a color <em>Yellow</em>
+as their initial color. This is not secret,
+so Eve can also know they will use yellow as
+their initial color.</p>
+<p><img src="appendix/dh/DH-color-1.png" alt="DH-color1" title="DH-color-1" /></p>
+<p>Next, Alice and Bob will randomly choose a secret color
+that won't tell anyone as their <strong>private key</strong>.
+Suppose Alice and Bob choose <em>Red</em> and <em>Cyan</em> respectively,
+then they will use their own secret color to mix with
+the initial color <em>Yellow</em>.
+After mixing the secret color with the initial color,
+Alice will get color <em>Dark-Orange</em>,
+and Bob will get color <em>Light-Green</em> as their <strong>public key</strong>.</p>
+<p>Next, Alice and Bob will give each other their mixing color.
+Eve can eavesdrop the conversation between Alice and Bob,
+so she can know their mixing color too.</p>
+<p>After Alice receives Bob's mixing color: <em>Light-Green</em>,
+she can make two copies of it and mixing these two with her
+own secret color: <em>Red</em> to get a final mixing color.</p>
+<p>Similarly, Bob can produce a final color by mixing his
+own secret color with the two copies of received mixing color from Alice.</p>
+<p>Surprisingly, Alice and Bob will generate the <strong>exactly same</strong> final color
+by the above step! They will both get <em>Olive Green</em>!
+The final color is the <strong>shared secret key</strong> between the Alice and Bob.</p>
+<p>After they both generate the same <strong>shared secret key</strong>,
+they can use it to encrypt or decrypt their messages.</p>
+<h3 id="summary-2"><a class="header" href="#summary-2">Summary</a></h3>
+<p>At first, Alice and Bob choose their own secret color:</p>
+<ul>
+<li>Alice: Red</li>
+<li>Bob: Cyan</li>
+</ul>
+<p>Then they mix their secret color with the initial color:</p>
+<ul>
+<li>Alice: Yellow + Red = Dark-Orange</li>
+<li>Bob: Yellow + Cyan = Light-Green</li>
+</ul>
+<p>Next, they give each other their mixing color, and then
+they both use the received mixing color
+to produce the final color:</p>
+<ul>
+<li>Alice: Red + Light-Green + Light-Green = Olive Green</li>
+<li>Bob: Cyan + Dark-Orange + Dark-Orange = Olive Green</li>
+</ul>
+<h3 id="can-we-choose-other-colors"><a class="header" href="#can-we-choose-other-colors">Can we choose other colors?</a></h3>
+<p>This game works even Alice and Bob choose other secret colors.
+Why not try your own to test and see the results?</p>
+<h4 id="try-you-own"><a class="header" href="#try-you-own">Try you own</a></h4>
+<p>You can play this game on online color mixing tool, like <a href="http://trycolors.com/" title="Online Color Mixing tool">TryColors</a>.
+If you want to re-produce our example, the used colors are:</p>
+<table><thead><tr><th>color</th><th>code</th></tr></thead><tbody>
+<tr><td>Yellow</td><td>#FFFF00</td></tr>
+<tr><td>Red</td><td>#FF0000</td></tr>
+<tr><td>Cyan</td><td>#00FFFF</td></tr>
+<tr><td>Dark-Orange</td><td>#FF8000</td></tr>
+<tr><td>Light-Green</td><td>#80FF80</td></tr>
+<tr><td>Olive Green</td><td>#AAAA55</td></tr>
+</tbody></table>
+<p>You can play our example online <a href="http://trycolors.com/?try=1&amp;ffff00=0&amp;ff0000=0&amp;00ffff=0&amp;ff8000=0&amp;80ff80=0&amp;aaaa55=0" title="Our example">here</a>.
+We already put all colors on it.</p>
+<p>For those who is curious about the information of the produced colors,
+you can just enter the color code <a href="http://www.htmlcsscolor.com/" title="Get Color Info">here</a> to get the color's name.</p>
+<h3 id="can-eve-produce-the-final-color"><a class="header" href="#can-eve-produce-the-final-color">Can Eve produce the final color?</a></h3>
+<p>Actually, Eve can produce the final color in this example
+if Eve know how Alice and Bob will mix those colors.
+However, if Alice and Bob finish their private conversation
+by using the shared secret key to encrypt/decrypt messages
+before Eve cracks the shared secret key, then the conversation
+can still be safe.</p>
+<p>In real world, the shared key is not easy to crack as our example here.
+This will be well-explained after
+introducing the standard <em>Diffie-Hellman</em> below.</p>
+<h2 id="diffie-hellman-in-math"><a class="header" href="#diffie-hellman-in-math">Diffie-Hellman in Math</a></h2>
+<p><img src="appendix/dh/DH-math.png" alt="DH-math" title="DH-math" /></p>
+<p>The initial setting between Alice and Bob from
+the original implementation of the protocol is
+a multiplicative group \( G \) of integers modulo \( p \) with generator \( g \),
+where \( p \) is prime, and \( g \) is a primitive root modulo p.</p>
+<p>The protocol is pretty simple.
+First, both Alice and Bob agree to use one set of \( g, p \).
+Then, just like the color example, Alice and Bob will respectively choose a
+random integer \( a, b \), where \( a, b \in [1, p-1] \),as their <strong>private key</strong>.</p>
+<p>Next, Alice and Bob will compute their <strong>public key</strong> \( A \), \( B \):</p>
+<p>\begin{aligned}
+A = g^a \bmod p \\
+\\
+B = g^b \bmod p
+\end{aligned}</p>
+<p>and send them to each other.
+That is, Alice will receive \( B \), and Bob will receive \( A \).</p>
+<p>After exchanging the <strong>public key</strong>,
+Alice and Bob can use the received number to produce a <strong>shared secret key</strong>.</p>
+<p>Let the shared secret key of Alice and Bob are \( Secret_A \) and \( Secret_B \),
+and they are defined by:</p>
+<p>\begin{aligned}
+Secret_A &amp;= B^a \bmod p \\
+&amp;= (g^b \bmod p)^a \bmod p \\
+&amp;= g^{ab} \bmod p \\
+\\
+Secret_B &amp;= A^b \bmod p \\
+&amp;= (g^a \bmod p)^b \bmod p \\
+&amp;= g^{ab} \bmod p
+\end{aligned}</p>
+<p>(For those who are not familiar with the above operations,
+please read <a href="appendix/dh/../modular_arithmetic.html" title="Modular Arithmetic">modular arithmetic</a> in the appendix first.)</p>
+<p>Thus,</p>
+<p>$$
+Secret_A = Secret_B
+$$</p>
+<p>Surprisingly, again, Alice and Bob will generate
+the <strong>exactly same</strong> shared secret key.
+They can use this key to encrypt the sent messages
+or decrypt the received messages.</p>
+<p>Notice that \( a, b, A, B, Secret_A, Secret_B \) are all located in
+range \( [1, p-1] \) because the operation \( \bmod p \).</p>
+<h3 id="examples-3"><a class="header" href="#examples-3">Examples</a></h3>
+<p>Let \( G = { 1, 2, 3, 4 } \) with prime \( p = 5 \) and generator \( g = 2 \).
+It's easy to check the group \( G \) by:</p>
+<p>\begin{aligned}
+2^1 \bmod 5 &amp;= 2 \\
+2^2 \bmod 5 &amp;= 2 \cdot 2 \bmod 5 \\
+&amp;= 4 \\
+2^3 \bmod 5 &amp;= 4 \cdot 2 \bmod 5 \\
+&amp;= 3 \\
+2^4 \bmod 5 &amp;= 3 \cdot 2 \bmod 5 \\
+&amp;= 1 \\
+2^5 \bmod 5 &amp;= 1 \cdot 2 \bmod 5 \\
+&amp;= 2
+\end{aligned}</p>
+<p>The \( g = 2 \) indeed can generate all elements \( { 1, 2, 3, 4 } \)
+and the generated element will go back to the first at the \( p \) times.</p>
+<p>After checking our settings, we start to play the <em>Diffie-Hellman</em>.
+Suppose Alice picks \( a = 3 \) and Bob picks \( b = 2 \),
+then</p>
+<p>\begin{aligned}
+A &amp;= g^a \bmod p = 2^3 \bmod 5 = 3 \\
+\\
+B &amp;= g^b \bmod p = 2^2 \bmod 5 = 4
+\end{aligned}</p>
+<p>Next, Alice will send \( A \) to Bob, and Bob will send \( B \) to Alice.
+Then Alice and Bob can compute the shared secret key after receiving
+the other's public key.</p>
+<p>\begin{aligned}
+Secret_A &amp;= B^a \bmod p = 4^3 \bmod 5 = 4 \\
+\\
+Secret_B &amp;= A^b \bmod p = 3^2 \bmod 5 = 4
+\end{aligned}</p>
+<p>It's obvious that \( Secret_A = Secret_B \) is a symmetric key pair,
+so Alice and Bob can apply some symmetric key cryptography algorithm
+such as <em>AES</em>, <em>DES</em>, to encrypt and decrypt their messages.</p>
+<p>The following table shows what Alice, Bob, and Eve know about the numbers
+for producing the shared secret key:</p>
+<table><thead><tr><th>Step</th><th>Alice</th><th>Eve</th><th>Bob</th></tr></thead><tbody>
+<tr><td>0</td><td>g = 2, p = 5</td><td>g = 2, p = 5</td><td>g = 2, p = 5</td></tr>
+<tr><td>1</td><td>a = 3</td><td></td><td>b = 2</td></tr>
+<tr><td>2</td><td>A = 3</td><td>A = 3, B = 4</td><td>B = 4</td></tr>
+<tr><td>3</td><td>Secret<sub>A</sub> = 4</td><td></td><td>Secret<sub>B</sub> = 4</td></tr>
+</tbody></table>
+<p>To get familiar with the <em>Diffie-Hellman</em> protocol,
+you can use the <a href="appendix/dh/../group_theory.html" title="Group Theory">example groups in appendix</a> to play it.</p>
+<h3 id="one-round-trip-implementation"><a class="header" href="#one-round-trip-implementation">One Round-Trip Implementation</a></h3>
+<p>The whole Diffie-Hellman can be actually done in one round-trip communication:
+<img src="appendix/dh/one-roundtrip-Diffie-Hellman.png" alt="one-roundtrip-DH" title="one-roundtrip-DH" /></p>
+<h3 id="can-eve-compute-the-shared-secret-key"><a class="header" href="#can-eve-compute-the-shared-secret-key">Can Eve compute the shared secret key?</a></h3>
+<p>The answer depends on whether \( G \) and \( g \) are chosen properly.
+In particular, the bigger of the size(or the order) of the group \( G \) is,
+the better the security between Alice and Bob is.</p>
+<p>When the size of \( G \) is small, like the above example,
+it's easy to crack the <em>secret key</em> from the <em>public key</em>.</p>
+<p>For instance, Eve can list all power-value pairs upon she knows \( g \) and \( p \).
+The power and value is actually the secret key and the public key.</p>
+<table><thead><tr><th>power(secret key)</th><th>value(public key)</th></tr></thead><tbody>
+<tr><td>1</td><td>2</td></tr>
+<tr><td>2</td><td>4</td></tr>
+<tr><td>3</td><td>3</td></tr>
+<tr><td>4</td><td>1</td></tr>
+</tbody></table>
+<p>With the above table, she can easily get the correct secret keys
+after receiving the public keys.
+When Eve receives \( A = 3, B = 4 \),
+she can look up the table to find the \( a = 3, b = 2 \).</p>
+<p>However, if the size of group is very large,
+then it will be very hard to list all the numbers
+and search the matched secret keys.
+This is actually the base of our network security today.
+The function \( f(x) = g^x \bmod p \) is one of the <strong>trapdoor</strong> functions,
+or <strong>one-way function</strong> functions.
+It's easy to use \( x \) to compute \( f(x) \),
+yet difficult to find its inverse function \( f^{-1}(f(x)) \) to get \( x \).
+The inverse function here is called <em>discrete logarithm problem</em>.
+It is considered to be computationally intractable.
+Currently there is no efficient algorithm to compute
+the discrete logarithms in general.</p>
+<p>Thus, when \( p \) is a very large number(the size of \( G \) will be very large),
+then Eve is currently impossible to eavesdrop the messages between Alice and Bob.</p>
+<p>(See more of trapdoor function <a href="appendix/dh/../trapdoor_function.html" title="Trapdoor Function">here</a>.)</p>
+<h3 id="generalization-to-finite-cyclic-groups"><a class="header" href="#generalization-to-finite-cyclic-groups">Generalization to Finite Cyclic Groups</a></h3>
+<p><em>Diffie-Hellman</em> protocol is actually can be generalize to finite cyclic groups,
+instead of specifying with the multiplicative group of integers modulo \( p \).
+In practice, <em>Elliptic Curve Diffie–Hellman</em> protocol is usually a better choice.
+It can achieve same security with less computation.</p>
+<ol>
+<li>Alice and Bob agree to use a finite cyclic group \( G \) of order \( n \)
+and a generator \( g \). The operation is defined: \( g^2 = g \centerdot g \),
+where \( \centerdot \) is the operator of the group.</li>
+<li>Alice randomly picks a number \( a \), \( 1 \leq a &lt; n \),
+and send \( g^a \) to Bob.</li>
+<li>Similarly, Bob picks a random number \( b \), \( 1 \leq b &lt; n \),
+and send \( g^b \) to Alice.</li>
+<li>Alice computes \( (g^b)^a = g^{ab} \)</li>
+<li>Bob computes \( (g^a)^b = g^{ab} \)</li>
+</ol>
+<p>The \( f(x) = g^x \) must be a one-way function and
+there should be no efficient algorithm to compute \( g^{ab} \)
+given \( g^a \) and \( g^b \), otherwise, the communication is insecure.</p>
+<h2 id="general-model"><a class="header" href="#general-model">General Model</a></h2>
+<p><img src="appendix/dh/DH-general.png" alt="DH-general" title="DH-general" /></p>
+<p>From the above two examples of <em>Diffie-Hellman</em>,
+we can find its general model.
+The general model is shown on above figure.</p>
+<p>To make sure the communication is secure,
+function \( f \) must be one-way function
+and there must be no efficient method to compute
+the \( Secret_A, Secret_B \) given \( A, B \).</p>
+<h3 id="the-standard-dh-implementation"><a class="header" href="#the-standard-dh-implementation">The standard DH implementation</a></h3>
+<p>We demostrate the original implementation of <em>Diffie-Hellman</em>
+in the general model below.</p>
+<h4 id="the-hypothesis-and-the-function-operation"><a class="header" href="#the-hypothesis-and-the-function-operation">The Hypothesis and the Function Operation</a></h4>
+<p>Hypothesis \( h \) is the group geneator \( g \),
+and the function \( f, F \) are defined:</p>
+<p>$$
+f(x,y) = F(x,y) = x^y \mod p
+$$</p>
+<h4 id="alice"><a class="header" href="#alice">Alice</a></h4>
+<p>Alice first randomly choose a secret number \( a \), \( a \in [1, p) \),
+where \( p \) is the order of the group.
+Next, Alice will compute a public key \( A \) and send it to Bob.
+Then Alice will receive Bob's public key \( B \) and
+then use it with secret number \( a \) to derive the shared key \( Secret_A \).
+(For those who are not familiar with the following operations,
+please read <a href="appendix/dh/../modular_arithmetic.html" title="Modular Arithmetic">modular arithmetic</a> in the appendix first.)</p>
+<p>\begin{aligned}
+A =&amp; f(h,a) \\
+=&amp; f(g,a) = g^a \mod p \\
+\\
+Secret_A =&amp; F(B,a) = B^a \mod p \\
+=&amp; (f(h,b))^a \mod p \\
+=&amp; (f(g,b))^a \mod p \\
+=&amp; (g^b \mod p)^a \mod p \\
+=&amp; g^{ab} \mod p
+\end{aligned}</p>
+<h4 id="bob"><a class="header" href="#bob">Bob</a></h4>
+<p>Similarly, Bob first randomly choose a secret number \( b \), \( b \in [1, p) \),
+where \( p \) is the order of the group.
+Next, Bob will compute a public key \( B \) and send it to Alice.
+Then Bob will receive Alice's public key \( A \) and
+then use it with secret number \( b \) to derive the shared key \( Secret_B \).</p>
+<p>\begin{aligned}
+B =&amp; f(h,b) \\
+=&amp; f(g,b) = g^b \mod p \\
+\\
+Secret_B =&amp; F(A,b) = A^b \mod p \\
+=&amp; (f(h,a))^b \mod p \\
+=&amp; (f(g,a))^b \mod p \\
+=&amp; (g^a \mod p)^b \mod p \\
+=&amp; g^{ab} \mod p
+\end{aligned}</p>
+<h3 id="for-color-calculation"><a class="header" href="#for-color-calculation">For Color Calculation</a></h3>
+<p><img src="appendix/dh/DH-color-calculation.png" alt="DH-color-calculation" title="DH-color-calculation" /></p>
+<h4 id="color-code"><a class="header" href="#color-code">Color Code</a></h4>
+<p>All of the color are mixed by red, green and blue lights.
+They all can be coded in a RGB set \( (r, g, b) \),
+where \( r \) is for red light, \( g \) is for green light, \( b \) is for blue light.</p>
+<h5 id="operations"><a class="header" href="#operations">Operations</a></h5>
+<p>The operations of color code are defined:</p>
+<ol>
+<li>\( k(r, g, b) = (kr, kg, kb) \), where \( k \) is a constant.</li>
+<li>\( (p, q, r) \square (l, m, n) = (p \square l, q \square m, r \square n) \),
+where \( \square \) can be any operator like \( +, -, \cdot, / \).</li>
+</ol>
+<h4 id="color-mixing"><a class="header" href="#color-mixing">Color Mixing</a></h4>
+<p>Suppose we have n colors: \( C_1, C_2, ...,C_n \),
+where \( C_1 = (R_1, G_1, B_1), C_2 = (R_2, G_2, B_2), ...,
+C_n = (R_n, G_n, B_n) \).
+The <strong>mixing color</strong> for these n one is
+\( C_{mixing} = (C_1 + C_2 + ... + C_n)/n
+= (\frac{R_1 + R_2 + ... + R_n}{n},
+\frac{G_1 + G_2 + ... + G_n}{n},
+\frac{B_1 + B_2 + ... + B_n}{n}) \)</p>
+<h4 id="the-hypothesis-and-the-function-operation-1"><a class="header" href="#the-hypothesis-and-the-function-operation-1">The Hypothesis and the Function Operation</a></h4>
+<p>Hypothesis \( h \) is the group geneator \( g \),
+and the function \( f, F \) are defined:</p>
+<p>\begin{aligned}
+f(X,Y) =&amp; \frac{X}{2} + \frac{Y}{2} \\
+=&amp; \frac{(R_x, G_x, B_x)}{2} + \frac{(R_y, G_y, B_y)}{2} \\
+=&amp; (\frac{R_x + R_y}{2},
+\frac{G_x + G_y}{2},
+\frac{B_x + B_y}{2}) \\
+\\
+F(X,Y) =&amp; \frac{2X}{3} + \frac{Y}{3} \\
+=&amp; \frac{(2R_x, 2G_x, 2B_x)}{3} + \frac{(R_y, G_y, B_y)}{3} \\
+=&amp; (\frac{2R_x + R_y}{3},
+\frac{2G_x + G_y}{3},
+\frac{2B_x + B_y}{3})
+\end{aligned}</p>
+<p>$$
+\text{, where } X = (R_x, G_x, B_x), Y=(R_y, G_y, B_y) \text{ are both RGB-color sets.}
+$$</p>
+<h4 id="alice-1"><a class="header" href="#alice-1">Alice</a></h4>
+<p>Randomly choose a secret color \( a = (R_a, G_a, B_a) \).</p>
+<p>The mixing color \( A \), \( A = (R_A, G_A, B_A) = f(h, a) \), will be sent to Bob,
+and Alice will receive a mixing color \( B \) from Bob.
+Then \( Secret_A \) can be derived by \( B \) and \( a \).</p>
+<p>\begin{aligned}
+A =&amp; (R_A, G_A, B_A) \\
+=&amp; f(h, a) \\
+=&amp; (\frac{R_i + R_a}{2},
+\frac{G_i + G_a}{2},
+\frac{B_i + B_a}{2})
+\\
+Secret_A =&amp; F(B, a) \\
+=&amp; (\frac{2R_B + R_a}{3},
+\frac{2G_B + G_a}{3},
+\frac{2B_B + B_a}{3}) \\
+=&amp; (\frac{2(\frac{R_i + R_b}{2}) + R_a}{3},
+\frac{2(\frac{G_i + G_b}{2}) + G_a}{3},
+\frac{2(\frac{B_i + B_b}{2}) + B_a}{3}) \\
+=&amp; (\frac{R_i + R_a + R_b}{3},
+\frac{G_i + G_a + G_b}{3},
+\frac{B_i + B_a + B_b}{3})
+\end{aligned}</p>
+<h4 id="bob-1"><a class="header" href="#bob-1">Bob</a></h4>
+<p>Randomly choose a secret color \( b = (R_b, G_b, B_b) \)</p>
+<p>The mixing color \( B \), \( B = (R_B, G_B, B_B) = f(h, b) \), will be sent to Alice,
+and Bob will receive a mixing color \( A \) from Alice.
+Then \( Secret_B \) can be derived by \( A \) and \( b \).</p>
+<p>\begin{aligned}
+B =&amp; (R_B, G_B, B_B) \\
+=&amp; f(h, b) \\
+=&amp; (\frac{R_i + R_b}{2},
+\frac{G_i + G_b}{2},
+\frac{B_i + B_b}{2})
+\\
+Secret_B =&amp; F(A, b) \\
+=&amp; (\frac{2R_A + R_b}{3},
+\frac{2G_A + G_b}{3},
+\frac{2B_A + B_b}{3}) \\
+=&amp; (\frac{2(\frac{R_i + R_a}{2}) + R_b}{3},
+\frac{2(\frac{G_i + G_a}{2}) + G_b}{3},
+\frac{2(\frac{B_i + B_a}{2}) + B_b}{3}) \\
+=&amp; (\frac{R_i + R_a + R_b}{3},
+\frac{G_i + G_a + G_b}{3},
+\frac{B_i + B_a + B_b}{3})
+\end{aligned}</p>
+<h2 id="real-world-usage"><a class="header" href="#real-world-usage">Real World Usage</a></h2>
+<p>The symmetric secret key \( Secret_A, Secret_B \) is almost never used
+as the cryptographic key directly since it may have some weak bits.
+One possible solution is to use its <strong>hash value</strong> instead
+to overcome this weakness.</p>
+<h2 id="weak-of-dh-no-authentication"><a class="header" href="#weak-of-dh-no-authentication">Weak of DH: No Authentication</a></h2>
+<p><img src="appendix/dh/eve-active-attacker.png" alt="eve-active-attacker" title="Active Attacker" /></p>
+<p><em>Diffie-Hellman</em> protocol has an obvious weak:
+It has no <strong>authentication</strong> mechanism.
+<strong>Neither side of the exchange is authenticated</strong>.
+Alice and Bob indeed can generate a shared secret key,
+but Alice can't distinguish whether or not Bob is the real one,
+and Bob can't know whether or not the one he is talking to is Alice.</p>
+<p>This weak give Eve a chance to cheat them.
+First, Eve can intercepts the public key \( A \) from Alice for Bob
+and substitutes it with Eve's own public key \( E \) to Bob.
+After Bob send back his public key \( B \), Eve will finally get a
+shared secret key paired with Bob.</p>
+<p>Next, Eve will act as Bob and send her another public key \( E' \) to Alice.
+Then Eve can get a shared secret key paired with Alice.</p>
+<p>That is, Eve can generate shared secret keys with them both</p>
+<ul>
+<li>Secret<sub>Eve</sub>,
+that is same as the one Bob has: Secret<sub>Bob</sub></li>
+<li>Secret'<sub>Eve</sub>,
+that is same as the one Alice has: Secret<sub>Alice</sub></li>
+</ul>
+<p>Thus, Eve can build secure channels with them each other
+and act as a bridge to pass the messages between Alice and Bob.
+Alice still can talk to Bob through Eve, and vice versa.
+However, Eve can know anything that Bob talks to Alice,
+and all the Alice's messages to Bob
+by decrypting the received messages from Alice or Bob.
+Before re-encrypting with the appropriate key
+and transmitting them to the other party,
+Eve even can tamper the messages.</p>
+<p>This is really dangerous.
+Using <strong>digital signatures</strong> is a possible solution
+to avoid this active attack,
+but it requires a public key infrastructure(PKI)
+to do the authentication.</p>
+<h2 id="one-way-function"><a class="header" href="#one-way-function">One-way Function</a></h2>
+<p>The trapdoor function, or the one-way function,
+is the base of the network security today.
+Please read <a href="appendix/dh/../trapdoor_function.html" title="Trapdoor Function">trapdoor function</a>
+in appendix to get more detail.</p>
+<h2 id="operation-with-more-than-two-parties"><a class="header" href="#operation-with-more-than-two-parties">Operation with More than Two Parties</a></h2>
+<p>The Diffie–Hellman protocol can work on more than two parties.
+Please read <a href="appendix/dh/dh_multiple_parties.html" title="Diffie–Hellman with multiple parties">Diffie–Hellman in multiple parties</a>
+in appendix to get more detail.</p>
+<h2 id="references-13"><a class="header" href="#references-13">References</a></h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=YEBfamv-_do" title="Public key cryptography - Diffie-Hellman Key Exchange">General introduction of Diffie-Hellman Key Exchange</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange" title="Diffie–Hellman key exchange">Wiki: Diffie–Hellman key exchange</a></li>
+<li><a href="http://trycolors.com/" title="Online Color Mixing tool">TryColors: Online Color Mixing tool</a></li>
+<li><a href="http://www.htmlcsscolor.com/" title="Get Color Info">htmlcsscolor: Get Color Name and Info</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><p>https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange#Operation_with_more_than_two_parties</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="diffie-hellman-assumptions"><a class="header" href="#diffie-hellman-assumptions">Diffie-Hellman Assumptions</a></h1>
+<ul>
+<li><strong>Computational Diffie-Hellman assumption(CDH)</strong>:
+an attacker is unable to compute the session key</li>
+<li><strong>Decisional DiffieHellman assumption(DDH)</strong>:
+an attacker is unable to distinguish the session key
+from random</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="zero-knowledge-proof-2"><a class="header" href="#zero-knowledge-proof-2">Zero-Knowledge Proof</a></h1>
+<p><img src="appendix/zkp/zkp-basic.png" alt="zkp" /></p>
+<h2 id="properties"><a class="header" href="#properties">Properties</a></h2>
+<ul>
+<li><strong>completeness</strong>:
+if the proof is true, honest prover convince verifier
+with overwhelming probability.</li>
+<li><strong>soundness</strong>:
+if the proof is false, no the honest verifier will be convinced
+by the cheating prover, except with some negligible  probability.</li>
+<li><strong>zero knowledge</strong>:
+no secret leaked from proof.</li>
+</ul>
+<h2 id="abstract-example"><a class="header" href="#abstract-example">Abstract example</a></h2>
+<p><img src="appendix/zkp/cave-1.png" alt="cave-1" />
+<img src="appendix/zkp/cave-2.png" alt="cave-2" />
+<img src="appendix/zkp/cave-3.png" alt="cave-3" />
+<img src="appendix/zkp/cave-4.png" alt="cave-4" /></p>
+<h2 id="references-14"><a class="header" href="#references-14">References</a></h2>
+<ul>
+<li><a href="http://cryptowiki.net/index.php?title=Zero-knowledge_proofs" title="Crypto Wiki: Zero-knowledge proofs">Crypto Wiki: Zero-knowledge proofs</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Zero-knowledge_proof" title="Wiki: Zero-knowledge proof">Wiki: Zero-knowledge proof</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="schnorr-signature"><a class="header" href="#schnorr-signature">Schnorr Signature</a></h1>
+<p>Schnorr Signature is one of <a href="appendix/zkp/zkp.html" title="Zero-Knowledge Proof"><em>Zero-Knowledge Proof</em></a></p>
+<h2 id="send-messages-with-a-schnorr-signature"><a class="header" href="#send-messages-with-a-schnorr-signature">Send messages with a Schnorr signature</a></h2>
+<p><img src="appendix/zkp/schnorr-signature.png" alt="schnorr-signature" /></p>
+<h2 id="proof-of-the-exponent-for-x--gx"><a class="header" href="#proof-of-the-exponent-for-x--gx">Proof of the exponent for X = g<sup>x</sup></a></h2>
+<p><img src="appendix/zkp/schnorr-signature-exponent-proof.png" alt="schnorr-signature-exponent-proof" /></p>
+<h2 id="references-15"><a class="header" href="#references-15">References</a></h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Schnorr_signature" title="Wiki: Schnorr signature">Wiki: Schnorr signature</a></li>
+<li><a href="https://www.youtube.com/watch?v=mV9hXEFUB6A" title="Youtube: Schnorr Digital Signature">Youtube: Schnorr Digital Signature</a></li>
+<li><a href="http://www.cs.jhu.edu/%7Esusan/600.641/scribes/lecture10.pdf" title="JHU: More on Proofs of Knowledge">JHU: More on Proofs of Knowledge</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h2 id="references-16"><a class="header" href="#references-16">References</a></h2>
+<p>http://andrea.corbellini.name/2015/05/17/elliptic-curve-cryptography-a-gentle-introduction/</p>
+<p>PAKE or J-PAKE can use Elliptic Curve Cryptography(ECC) to replace
+the multiplicative cyclic group with additive cyclic group defined over
+some elliptic curve.</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=F3zzNa42-tQ" title="Elliptic Curve Diffie Hellman">Elliptic Curve Diffie Hellman</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            MathJax.Hub.Register.StartupHook('End', function() {
+                window.setTimeout(window.print, 100);
+            });
+        });
+        </script>
+    </body>
+</html>
